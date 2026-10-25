@@ -1,0 +1,880 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d7a4a"><meta name="ek-app-version" content="1.5.0"><meta name="description" content="EverydayKit brings useful country links and free everyday tools together."><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="EverydayKit"><link rel="manifest" href="./manifest.json"><link rel="icon" href="./icons/icon-192.png" type="image/png"><link rel="apple-touch-icon" href="./icons/icon-192.png"><title>EverydayKit — Country directory & tools</title>
+<style>
+:root{--bg:#0b1220;--panel:#121d30;--panel2:#18263c;--text:#f4f7fb;--muted:#aab7ca;--accent:#67e8b5;--line:#26364e}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top right,#172c42 0,#0b1220 45%);color:var(--text);font:16px/1.5 system-ui,Arial,sans-serif}header,main,footer{max-width:1120px;margin:auto;padding-left:17px;padding-right:17px}header{padding-top:24px;padding-bottom:18px}.brand{display:flex;align-items:center;gap:10px;font-size:1.18rem;font-weight:850}.logo{display:grid;place-items:center;background:var(--accent);color:#062116;width:40px;height:40px;border-radius:13px}h1{font-size:clamp(2.1rem,7vw,3.7rem);line-height:1.05;letter-spacing:-1.4px;margin:25px 0 10px}h1 span{color:var(--accent)}p,.muted{color:var(--muted)}.intro{max-width:680px}.controls{display:grid;grid-template-columns:1fr;gap:10px;margin:20px 0}input,select{width:100%;min-width:0;padding:13px;border:1px solid var(--line);border-radius:13px;background:#101a2b;color:var(--text);font:inherit}.countryline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.countryline select{flex:1;min-width:190px}.flag{font-size:1.5rem}.sectionhead{display:flex;justify-content:space-between;gap:10px;align-items:end;margin:25px 0 12px}h2{font-size:1.3rem;margin:0}.chips{display:flex;gap:8px;overflow:auto;padding:2px 0 12px}.chip{white-space:nowrap;border:1px solid var(--line);border-radius:99px;padding:9px 13px;background:var(--panel);color:var(--muted);font-weight:700}.chip.active{background:var(--accent);color:#082319;border-color:var(--accent)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card,.tool{background:linear-gradient(145deg,var(--panel),#101a2a);border:1px solid var(--line);border-radius:17px;padding:14px;min-width:0}.cardtop{display:flex;gap:10px;align-items:center}.brandimg{width:42px;height:42px;border-radius:12px;background:#fff;object-fit:contain;padding:5px;flex-shrink:0}.brandfallback{width:42px;height:42px;border-radius:12px;background:var(--panel2);display:grid;place-items:center;font-size:1.25rem;flex-shrink:0}h3{font-size:1rem;margin:0;overflow-wrap:anywhere}.tag{display:inline-block;font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 7px;margin-top:4px}.card p{font-size:.84rem;line-height:1.4;margin:10px 0}.card a{color:var(--accent);font-weight:800;text-decoration:none;font-size:.9rem}.card a:hover{text-decoration:underline}.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.tool p{font-size:.85rem;margin:5px 0 10px}.tool button{width:100%;border:0;border-radius:11px;padding:11px;background:var(--accent);color:#082319;font-weight:800}.result{color:var(--accent);font-size:.9rem;overflow-wrap:anywhere;margin-top:8px}textarea{width:100%;background:#0b1423;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}.notice{margin:18px 0;border:1px solid #66522a;background:#2a2417;color:#f2dca7;border-radius:12px;padding:12px;font-size:.85rem}.empty{display:none;color:var(--muted);padding:20px;text-align:center}footer{border-top:1px solid var(--line);padding-top:22px;padding-bottom:25px;color:var(--muted);font-size:.85rem;text-align:center}button{cursor:pointer}@media(min-width:650px){header{padding-top:35px}.controls{grid-template-columns:1.4fr 1fr}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tools{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(min-width:950px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+.accountbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.secondarybtn{cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:11px 14px;font-weight:800;background:var(--panel2);color:var(--text)}
+.primarybtn{cursor:pointer;border:0;border-radius:12px;padding:11px 14px;font-weight:800;background:var(--accent);color:#082319}
+.accountstatus{font-size:.85rem;color:var(--muted);margin-top:8px}
+.modalback{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:16px;z-index:99}
+.modalback.open{display:flex}.modal{width:min(100%,430px);background:#121d30;border:1px solid var(--line);border-radius:20px;padding:19px;box-shadow:0 20px 70px #0008}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.modal h2{margin:0 0 12px}.modal label{display:block;font-size:.88rem;color:var(--muted);margin:10px 0 5px}.modal input{margin-bottom:3px}.modal .full{width:100%;margin-top:10px}.smalltext{font-size:.78rem;color:var(--muted);line-height:1.45}.userpill{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;background:var(--panel);border:1px solid var(--line);border-radius:99px;color:var(--text);font-size:.85rem}
+
+
+/* EverydayKit Chat */
+.chatback{position:fixed;inset:0;z-index:10001;background:#07101beF;display:flex;align-items:center;justify-content:center;padding:10px}.chatback[hidden]{display:none}.chat-shell{width:min(100%,760px);height:min(850px,calc(100dvh - 20px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #2b4059;border-radius:20px;background:#0d1828;box-shadow:0 25px 90px #000a}.chat-top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#142238;border-bottom:1px solid #2b4059}.chat-top strong,.chat-top small{display:block}.chat-top small{font-size:12px;color:#aab7ca;margin-top:2px}.chat-start{padding:16px;border-bottom:1px solid #26364e}.chat-start p{margin:4px 0 12px}.chat-find{display:flex;gap:8px}.chat-find input{flex:1;min-width:0}.chat-room{min-height:0;flex:1;display:flex;flex-direction:column}.chat-contact{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #26364e}.chat-contact strong{flex:1;overflow-wrap:anywhere}.chat-contact span{font-size:11px;color:#aab7ca}.chat-messages{flex:1;min-height:0;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:9px}.chat-bubble{max-width:85%;align-self:flex-start;background:#1b2b40;border:1px solid #2b4059;border-radius:15px 15px 15px 4px;padding:9px 11px;overflow-wrap:anywhere;white-space:pre-wrap}.chat-bubble.mine{align-self:flex-end;background:#67e8b5;color:#07131d;border-color:#67e8b5;border-radius:15px 15px 4px 15px}.chat-bubble small{display:block;font-size:10px;opacity:.75;margin-top:5px}.chat-bubble video{display:block;max-width:100%;max-height:260px;border-radius:10px;margin-top:6px}.chat-stickers{display:flex;gap:7px;overflow:auto;padding:7px 12px}.chat-stickers button{font-size:22px;background:#17263a;border:1px solid #2b4059;border-radius:12px;min-width:42px;padding:5px}.chat-compose{display:flex;align-items:flex-end;gap:7px;padding:10px 12px;border-top:1px solid #26364e}.chat-compose textarea{flex:1;min-width:0;max-height:100px;resize:vertical}.chat-upload{background:#17263a;border:1px solid #2b4059;border-radius:12px;padding:11px 9px;white-space:nowrap;cursor:pointer;font-size:13px}.chat-hint{padding:0 12px 10px;margin:0;font-size:11px}.chat-status-error{color:#ffaaaa!important}.chat-status-ok{color:#67e8b5!important}
+@media(max-width:500px){.chatback{padding:0}.chat-shell{height:100dvh;border-radius:0;width:100%}.chat-find{flex-wrap:wrap}.chat-find input{flex-basis:100%}.chat-contact span{display:none}.chat-compose{gap:5px;padding:8px}.chat-upload{font-size:12px;padding:11px 7px}}
+/* EverydayKit floating helper */
+.ek-ai-launch{position:fixed;right:18px;bottom:18px;z-index:9998;border:0;border-radius:999px;background:#67e8b5;color:#07131d;padding:13px 17px;font-weight:800;box-shadow:0 10px 35px #0008;display:flex;align-items:center;gap:9px;cursor:pointer}
+.ek-ai-launch .ek-ai-spark{font-size:20px}
+.ek-ai-panel{position:fixed;right:14px;bottom:82px;width:min(360px,calc(100vw - 28px));height:min(520px,calc(100dvh - 115px));z-index:9999;background:#101b2c;color:#f4f7fb;border:1px solid #33445c;border-radius:20px;box-shadow:0 20px 60px #0009;display:none;overflow:hidden;flex-direction:column}
+.ek-ai-panel.open{display:flex}
+.ek-ai-head{padding:14px 15px;background:#17263a;border-bottom:1px solid #33445c;display:flex;align-items:center;gap:10px}
+.ek-ai-avatar{width:38px;height:38px;border-radius:12px;background:#67e8b5;color:#07131d;display:grid;place-items:center;font-size:21px;font-weight:900}
+.ek-ai-headtext{flex:1;min-width:0}.ek-ai-headtext strong{display:block}.ek-ai-headtext small{color:#aab7ca}
+.ek-ai-close{border:0;background:transparent;color:#f4f7fb;font-size:25px;padding:2px 7px;cursor:pointer}
+.ek-ai-messages{padding:14px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+.ek-ai-msg{max-width:90%;padding:10px 12px;border-radius:14px;background:#1b2b40;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
+.ek-ai-msg.user{align-self:flex-end;background:#67e8b5;color:#07131d}
+.ek-ai-suggestions{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 10px}
+.ek-ai-suggestions button{border:1px solid #3b5068;border-radius:999px;background:#17263a;color:#d9fff2;padding:7px 10px;font-size:12px;cursor:pointer}
+.ek-ai-form{display:flex;gap:8px;padding:12px;border-top:1px solid #33445c}
+.ek-ai-input{min-width:0;flex:1;border:1px solid #3b5068;border-radius:12px;background:#0b1422;color:#f4f7fb;padding:11px;font:inherit;font-size:14px}
+.ek-ai-send{border:0;border-radius:12px;background:#67e8b5;color:#07131d;padding:0 14px;font-weight:800;cursor:pointer}
+.ek-ai-note{padding:0 13px 10px;color:#aab7ca;font-size:11px}
+@media(max-width:420px){.ek-ai-launch{right:12px;bottom:12px}.ek-ai-panel{right:8px;bottom:72px;width:calc(100vw - 16px);height:min(500px,calc(100dvh - 90px))}}
+
+
+/* Added: subtle entrance animation, preserving the original EverydayKit design */
+@keyframes ekEnter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+body > header { animation: ekEnter .55s ease-out both; }
+body > main { animation: ekEnter .7s ease-out .08s both; }
+body > footer { animation: ekEnter .7s ease-out .15s both; }
+.tool, .card, .service-card { animation: ekEnter .45s ease-out both; }
+button, .primarybtn, .secondarybtn, .ek-ai-launch, .ek-ai-send { transition: transform .16s ease, filter .16s ease; }
+button:active, .primarybtn:active, .secondarybtn:active, .ek-ai-launch:active, .ek-ai-send:active { transform: scale(.97); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+
+/* Full-screen launch animation */
+#ekSplash{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;background:radial-gradient(circle at 50% 35%,#1b3850 0,#0b1220 62%);color:#f4f7fb;transition:opacity .55s ease,visibility .55s ease}
+#ekSplash.ekSplashDone{opacity:0;visibility:hidden;pointer-events:none}
+.ekSplashLogo{width:92px;height:92px;border-radius:28px;background:#67e8b5;color:#062116;display:grid;place-items:center;font-size:31px;font-weight:950;letter-spacing:-2px;box-shadow:0 0 0 0 #67e8b544;animation:ekLogoPop .75s cubic-bezier(.2,.8,.2,1) both,ekLogoPulse 1.5s ease-in-out .7s infinite}
+.ekSplashName{font-size:26px;font-weight:900;letter-spacing:-.7px;animation:ekSplashText .6s ease .18s both}
+.ekSplashTag{font-size:11px;letter-spacing:3px;color:#aab7ca;animation:ekSplashText .6s ease .3s both}
+.ekSplashTrack{width:120px;height:4px;border-radius:99px;background:#26364e;overflow:hidden;margin-top:8px;animation:ekSplashText .6s ease .3s both}
+.ekSplashTrack:after{content:"";display:block;width:45%;height:100%;border-radius:99px;background:#67e8b5;animation:ekSplashLoad 1.1s ease-in-out infinite}
+@keyframes ekLogoPop{from{opacity:0;transform:scale(.55) rotate(-12deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes ekLogoPulse{0%,100%{box-shadow:0 0 0 0 #67e8b400}50%{box-shadow:0 0 0 13px #67e8b414}}
+@keyframes ekSplashText{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ekSplashLoad{from{transform:translateX(-120%)}to{transform:translateX(340%)}}
+@media(prefers-reduced-motion:reduce){#ekSplash,.ekSplashLogo,.ekSplashName,.ekSplashTag,.ekSplashTrack:after{animation:none!important;transition:none!important}}
+
+/* Apps & Games full-screen popup */
+.apps-launch{margin-top:10px;margin-left:7px}
+#appsSection{position:fixed;inset:0;z-index:9997;overflow:auto;padding:18px 16px 35px;background:radial-gradient(circle at top right,#172c42 0,#0b1220 48%);}
+#appsSection[hidden]{display:none!important}
+.apps-shell{max-width:1120px;margin:0 auto;padding-top:env(safe-area-inset-top,0px)}
+.apps-header{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:10px 0 14px;background:#0b1220ed;backdrop-filter:blur(12px)}
+.apps-header-title{flex:1;min-width:0}.apps-header h2{font-size:1.45rem}.apps-close{border:1px solid #36506e;border-radius:12px;background:#18263c;color:#f4f7fb;font-size:1rem;font-weight:850;padding:11px 14px}
+.apps-intro{font-size:.9rem;margin:6px 0 14px}.apps-search{margin:10px 0 12px}.apps-filters{display:flex;gap:8px;overflow-x:auto;padding:2px 0 14px}.apps-filter{flex-shrink:0;border:1px solid #26364e;border-radius:99px;padding:8px 12px;background:#121d30;color:#aab7ca;font-weight:750}.apps-filter.active{background:#67e8b5;color:#082319;border-color:#67e8b5}
+.apps-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.app-card{background:linear-gradient(145deg,#121d30,#0d1727);border:1px solid #2a3d58;border-radius:15px;padding:12px;display:flex;flex-direction:column;gap:9px;min-width:0}.app-top{display:flex;align-items:center;gap:9px}.app-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#1c3048;font-size:22px;flex-shrink:0}.app-meta{min-width:0;flex:1}.app-meta h3{margin:0;font-size:.93rem}.app-meta p{font-size:.77rem;margin:4px 0 0}.app-badge{display:inline-block;font-size:.65rem;border:1px solid #36506e;border-radius:99px;padding:2px 6px;color:#aab7ca;margin-top:5px}.app-download{display:block;text-align:center;border-radius:10px;padding:10px 8px;background:#67e8b5;color:#082319;text-decoration:none;font-weight:850;font-size:.82rem}.app-download.external{background:#1b2b40;color:#e5fff5;border:1px solid #36506e}.apps-safety{font-size:.78rem;color:#aab7ca;margin:16px 0 0}.apps-empty{display:none;color:#aab7ca;padding:22px;text-align:center}@media(min-width:650px){.apps-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(min-width:950px){.apps-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+
+/* EverydayKit 2026 visual refresh — green brand, cleaner app-like layout */
+:root{--bg:#07150f;--panel:#0e2118;--panel2:#143526;--text:#f4fff8;--muted:#a9c6b5;--accent:#35df8a;--line:#254c38;--ek-green:#35df8a;--ek-green-dark:#0d7a4a;--ek-card:#0c2017}
+html{scroll-behavior:smooth;background:var(--bg)}body{background:radial-gradient(ellipse at 8% -8%,#145b39 0,transparent 38%),radial-gradient(ellipse at 100% 12%,#123b29 0,transparent 32%),#07150f;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;min-height:100vh}
+header,main,footer{max-width:1180px;padding-left:clamp(16px,4vw,32px);padding-right:clamp(16px,4vw,32px)}header{padding-top:20px;padding-bottom:26px}
+.brand{gap:12px;font-size:1.05rem;letter-spacing:-.25px}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#69f7ad,#20c875);color:#052b19;box-shadow:0 8px 24px #20c87530;font-size:1.02rem}.brand .tag{margin:0 0 0 auto;padding:5px 9px;border-color:#286346;color:#a7e9c3;background:#0c2b1c;font-size:.62rem;letter-spacing:.8px}
+h1{font-size:clamp(2.25rem,7.8vw,4.5rem);line-height:1.02;letter-spacing:-2.1px;margin:32px 0 14px;max-width:800px;font-weight:900}h1 span{background:linear-gradient(90deg,#68f7a9,#22d17b);background-clip:text;-webkit-background-clip:text;color:transparent}.intro{max-width:700px;font-size:1rem;line-height:1.75;color:#b8d4c4}
+.controls{margin:24px 0 16px;gap:12px}.countryline{padding:9px 10px;border:1px solid #2a6144;border-radius:18px;background:#0b2117;box-shadow:0 12px 35px #0002}.countryline select{border:0;background:transparent}.flag{padding-left:6px}.accountbar{align-items:center;gap:10px;margin-top:16px}.primarybtn,.secondarybtn{border-radius:14px;padding:12px 16px;font-size:.91rem;min-height:46px;transition:transform .18s,background .18s,border-color .18s;box-shadow:none}.primarybtn{background:linear-gradient(135deg,#55f3a0,#23cf79);color:#052a18;border:1px solid #69f6aa;font-weight:850}.secondarybtn{background:#102b1e;border:1px solid #2c6546;color:#e4fff0;font-weight:750}.primarybtn:hover,.secondarybtn:hover{filter:brightness(1.07);transform:translateY(-1px)}#installAppBtn{margin-top:0!important}#installHelp:empty{display:none}.accountstatus{margin-top:9px;font-size:.82rem}.userpill{background:#0e2c1e;border-color:#2b6546}
+header{position:relative}header:after{content:"";display:block;height:1px;margin-top:27px;background:linear-gradient(90deg,#35df8a55,transparent)}
+.sectionhead{align-items:center;margin:34px 0 15px;gap:12px}.sectionhead h2{font-size:1.25rem;letter-spacing:-.4px}.sectionhead .muted{font-size:.78rem;background:#10271b;border:1px solid #234a34;border-radius:999px;padding:5px 10px;white-space:nowrap}.chips{gap:8px;padding-bottom:15px;scrollbar-width:thin}.chip{border-radius:999px;padding:9px 14px;background:#0e2419;border-color:#254b36;color:#b6d3c1;font-size:.82rem}.chip.active{background:#35df8a;color:#052b19;border-color:#35df8a;box-shadow:0 5px 18px #35df8a22}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.card,.tool{background:linear-gradient(150deg,#10271b,#0a1b12 90%);border:1px solid #234a34;border-radius:20px;padding:16px;box-shadow:0 10px 28px #00000012;transition:transform .2s,border-color .2s,box-shadow .2s}.card:hover,.tool:hover{transform:translateY(-3px);border-color:#3c8b5e;box-shadow:0 14px 34px #0003}.brandimg,.brandfallback{width:46px;height:46px;border-radius:15px}.brandfallback{background:#163c29}.cardtop{gap:12px}.card h3{font-size:.98rem;line-height:1.3}.tag{border-color:#2a6042;color:#a9e7c1;background:#0e2a1c;font-size:.66rem;letter-spacing:.1px}.card p{font-size:.83rem;line-height:1.6;color:#b5cfbf;margin:12px 0 14px;min-height:2.5em}.card a{display:inline-flex;align-items:center;gap:5px;color:#5aefa0;font-size:.84rem}.tools{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.tool{padding:17px}.tool h3{font-size:1rem;letter-spacing:-.2px}.tool p{font-size:.83rem;line-height:1.55;color:#b5cfbf;min-height:2.5em}.tool button{background:linear-gradient(135deg,#55f3a0,#23cf79);color:#052a18;border-radius:13px;padding:12px;font-weight:850}.result{color:#62f1a3;background:#0b2a1b;border:1px solid #205c3a;border-radius:12px;padding:8px 10px;font-size:.83rem}input,select,textarea{background:#091b12;color:var(--text);border:1px solid #2b573d;border-radius:14px;padding:13px 14px;outline:none}input:focus,select:focus,textarea:focus{border-color:#45e991;box-shadow:0 0 0 3px #35df8a20}textarea{line-height:1.5}.notice{border-color:#386a4a;background:#12291b;color:#c7e8d3;border-radius:16px;padding:15px}.empty{background:#0d2117;border:1px dashed #2b573d;border-radius:18px}footer{border-color:#20442f;color:#9dbdaa;padding-top:24px;padding-bottom:32px}
+.modalback{background:#031109d9;backdrop-filter:blur(9px)}.modal{background:#0e2419;border-color:#2b6042;border-radius:24px;box-shadow:0 25px 80px #0008}.modal input{background:#091b12}.modal .full{min-height:46px}
+/* Chat follows the refreshed green design */
+.chatback{background:#031109eF;backdrop-filter:blur(10px)}.chat-shell{background:#091b12;border-color:#2b6042;border-radius:24px;box-shadow:0 30px 100px #000b}.chat-top{background:#102b1e;border-color:#254d36}.chat-start,.chat-contact,.chat-compose{border-color:#234a34}.chat-contact{background:#0d2117}.chat-messages{background:radial-gradient(ellipse at top,#102a1c,#08180f 70%)}.chat-bubble{background:#143324;border-color:#2b6042;border-radius:17px 17px 17px 5px}.chat-bubble.mine{background:#35df8a;border-color:#35df8a;color:#052b19}.chat-stickers button,.chat-upload{background:#102b1e;border-color:#2b6042;color:#e5fff0;border-radius:13px}.chat-status-ok{color:#5aefa0!important}
+.ek-ai-launch{background:linear-gradient(135deg,#55f3a0,#23cf79);color:#052a18;box-shadow:0 12px 35px #0006}.ek-ai-panel{background:#0b2016;border-color:#2b6042}.ek-ai-head{background:#102b1e;border-color:#2b6042}.ek-ai-avatar{background:#35df8a;color:#052b19}.ek-ai-msg{background:#153425}.ek-ai-msg.user{background:#35df8a;color:#052b19}.ek-ai-suggestions button{background:#102b1e;border-color:#2b6042;color:#dfffee}.ek-ai-form{border-color:#2b6042}.ek-ai-input{background:#07170f;border-color:#2b6042}.ek-ai-send{background:#35df8a;color:#052b19}
+#ekSplash{background:radial-gradient(circle at 50% 35%,#145b39 0,#07150f 68%)}.ekSplashLogo{background:linear-gradient(135deg,#69f7ad,#20c875);color:#052b19}.ekSplashTag{color:#b3d5c1}.ekSplashTrack{background:#244b35}.ekSplashTrack:after{background:#35df8a}
+#appsSection{background:radial-gradient(ellipse at top right,#145b39 0,transparent 35%),#07150f}.apps-header{background:#07150fee}.apps-close{background:#102b1e;border-color:#2b6042}.apps-filter{background:#0e2419;border-color:#254b36;color:#b6d3c1}.apps-filter.active{background:#35df8a;color:#052b19;border-color:#35df8a}.app-card{background:linear-gradient(150deg,#10271b,#0a1b12);border-color:#234a34;border-radius:18px}.app-icon{background:#163c29}.app-download{background:#35df8a;color:#052b19!important;border-radius:12px}.apps-safety{color:#b5cfbf}
+@media(min-width:650px){.controls{grid-template-columns:1.4fr 1fr}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tools{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:950px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}header{padding-top:28px}h1{margin-top:38px}}
+@media(max-width:520px){header,main,footer{padding-left:15px;padding-right:15px}.brand .tag{display:none}h1{font-size:2.55rem;letter-spacing:-1.5px;margin-top:27px}.intro{font-size:.91rem}.accountbar{display:grid;grid-template-columns:1fr 1fr}.accountbar #userPill{grid-column:1/-1}.accountbar button{padding:11px 9px;font-size:.82rem}.apps-launch{margin-left:0}.grid{gap:10px}.card,.tool{padding:13px;border-radius:17px}.brandimg,.brandfallback{width:40px;height:40px;border-radius:12px}.cardtop{gap:9px}.card h3{font-size:.9rem}.card p{font-size:.78rem}.tools{gap:10px}.tool p{min-height:4.2em}.sectionhead{margin-top:28px}.sectionhead h2{font-size:1.12rem}.sectionhead .muted{font-size:.68rem}.chat-shell{border-radius:0}.apps-grid{gap:9px}.app-card{padding:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.tool,button{transition:none!important}}
+
+
+/* Header action alignment and compact app settings */
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.brandrow .brand{min-width:0}.header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}.header-iconbtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:9px 12px;border:1px solid #286344;border-radius:13px;background:#102b1e;color:#e4fff0;font-weight:800;font-size:.84rem}.header-iconbtn.install{background:linear-gradient(135deg,#55f3a0,#23cf79);color:#052a18;border-color:#69f6aa}.header-iconbtn[hidden]{display:none!important}.settingsback{position:fixed;inset:0;z-index:10003;background:#000a;display:none;align-items:center;justify-content:center;padding:16px}.settingsback.open{display:flex}.settings-card{width:min(100%,420px);background:#102319;border:1px solid #286344;border-radius:22px;padding:20px;box-shadow:0 24px 70px #0009}.settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #244a35}.settings-row:last-child{border-bottom:0}.settings-card h2{margin:0}.settings-card p{font-size:.88rem}.auth-google{background:#f8fafc;color:#17211b;border:1px solid #dce5de}.auth-divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.75rem;margin:12px 0}.auth-divider:before,.auth-divider:after{content:'';height:1px;background:var(--line);flex:1}
+@media(max-width:520px){.brandrow{align-items:center}.header-actions{gap:6px}.header-iconbtn{min-height:39px;padding:8px 9px;font-size:.76rem}.brand{font-size:1.05rem}.brand .logo{width:36px;height:36px}.header-actions .install-label{display:none}.header-actions .header-iconbtn.install{width:40px;padding:8px}.header-actions .header-iconbtn.settings{width:40px;padding:8px}}
+
+
+/* EverydayKit preferences: light/dark themes and accessible layout controls */
+.settings-card{max-height:min(88dvh,820px);overflow:auto}.settings-group{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.settings-group h3{font-size:.95rem;margin:0 0 4px;color:var(--accent)}.settings-row select{width:auto;max-width:52%;padding:9px 10px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px}.settings-row label{flex:1;display:block;cursor:pointer}.settings-check{width:22px;height:22px;accent-color:var(--accent);flex-shrink:0}.settings-card{background:var(--panel);color:var(--text);border-color:var(--line)}.settings-row{border-color:var(--line)}
+body[data-theme="light"]{--bg:#f4f7f5;--panel:#ffffff;--panel2:#edf3ef;--text:#18251d;--muted:#5d6b62;--accent:#16834c;--line:#d7e2da;background:linear-gradient(180deg,#f4f8f5,#eaf1ec);color:var(--text)}
+body[data-theme="light"] input,body[data-theme="light"] select,body[data-theme="light"] textarea{background:#fff;color:#18251d;border-color:#d2ddd5}
+body[data-theme="light"] .card,body[data-theme="light"] .tool{background:#fff;border-color:#d7e2da}
+body[data-theme="light"] .secondarybtn,body[data-theme="light"] .header-iconbtn:not(.install){background:#edf3ef;color:#1d3426;border-color:#d1dfd5}
+body[data-theme="light"] .modal,body[data-theme="light"] .settings-card{background:#fff;color:#18251d;border-color:#d7e2da}
+body[data-theme="light"] .userpill{background:#edf3ef;color:#18251d;border-color:#d7e2da}
+body[data-theme="light"] .countryline{background:#fff;border-color:#d7e2da}
+body[data-theme="light"] .chat-shell{background:#f8fbf9;color:#18251d;border-color:#d7e2da}body[data-theme="light"] .chat-top,body[data-theme="light"] .chat-start,body[data-theme="light"] .chat-contact,body[data-theme="light"] .chat-compose{background:#edf3ef;border-color:#d7e2da}body[data-theme="light"] .chat-messages{background:#f8fbf9}body[data-theme="light"] .chat-bubble{background:#e8f1eb;color:#18251d;border-color:#d1dfd5}body[data-theme="light"] .ek-ai-panel{background:#fff;color:#18251d;border-color:#d7e2da}body[data-theme="light"] .ek-ai-head{background:#edf3ef;color:#18251d;border-color:#d7e2da}body[data-theme="light"] .ek-ai-close{color:#18251d}body[data-theme="light"] .ek-ai-msg{background:#edf3ef;color:#18251d}body[data-theme="light"] .ek-ai-suggestions button{background:#edf3ef;color:#18251d;border-color:#d7e2da}body[data-theme="light"] #ekSplash{background:radial-gradient(circle at 50% 35%,#d8f3e2 0,#f4f8f5 68%)}body[data-theme="light"] .ekSplashTag{color:#486354}
+body[data-compact="true"] .card,body[data-compact="true"] .tool{padding:10px;border-radius:12px}body[data-compact="true"] .grid,body[data-compact="true"] .tools{gap:7px}body[data-text-size="small"]{font-size:14px}body[data-text-size="large"]{font-size:18px}body[data-reduce-motion="true"] *,body[data-reduce-motion="true"] *::before,body[data-reduce-motion="true"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(max-width:520px){.settings-card{padding:16px}.settings-row{gap:8px}.settings-row select{max-width:48%;font-size:.82rem}}
+
+
+/* Chat lives in the main bottom navigation; keep the floating AI helper separate. */
+.ek-ai-launch{right:18px;bottom:91px;padding:10px 13px;font-size:13px;box-shadow:0 7px 22px #0006}
+@media(max-width:520px){.ek-ai-launch{right:16px;bottom:calc(86px + env(safe-area-inset-bottom));padding:9px 12px}}
+
+
+/* EverydayKit Pro UI refresh: premium mobile-first green design */
+:root{--bg:#f5f8f6;--panel:#ffffff;--panel2:#eef5f0;--text:#14261c;--muted:#708076;--accent:#12834c;--line:#e0e9e2;--ek-green:#087747;--ek-soft:#e7f7ee}
+body{background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:105px;letter-spacing:-.01em}
+header,main,footer{max-width:760px;padding-left:18px;padding-right:18px}header{padding-top:16px;padding-bottom:12px}
+.brandrow{margin-bottom:22px}.brand{font-size:19px;font-weight:850;letter-spacing:-.04em}.logo{width:39px;height:39px;border-radius:13px;background:linear-gradient(145deg,#16a05b,#075d37);box-shadow:0 6px 16px #08774725;color:white;font-size:15px}.tag{font-size:10px;letter-spacing:.07em;color:var(--muted)}
+header h1{font-size:clamp(26px,7vw,38px);line-height:1.08;letter-spacing:-.055em;margin:12px 0 9px;font-weight:850}header h1 span{color:var(--ek-green)}.intro{font-size:13px;line-height:1.55;color:var(--muted);max-width:540px;margin:0 0 16px}
+.controls{display:grid;grid-template-columns:1fr;gap:9px}.countryline,input#search{min-height:48px;border-radius:15px;background:white;border:1px solid var(--line);box-shadow:0 2px 8px #14261c05}.countryline{padding:0 12px}.countryline select{font-size:14px}.controls input{padding:0 14px;font-size:14px}.accountbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.accountbar button{border-radius:13px;min-height:42px;font-size:12px;padding:10px 13px}.primarybtn{background:var(--ek-green);border-color:var(--ek-green);box-shadow:0 5px 14px #08774720}.secondarybtn{background:#fff;border-color:var(--line);color:var(--text)}.accountstatus{font-size:11px;color:var(--muted)}
+.ek-home-page{display:block!important}.ek-welcome{position:relative;overflow:hidden;min-height:230px;border-radius:27px;padding:25px 22px;background:linear-gradient(130deg,#0a7041,#108a51 58%,#20a568);color:white;box-shadow:0 14px 32px #08774722}.ek-welcome:after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;border:1px solid #ffffff20;right:-100px;top:-90px;box-shadow:0 0 0 25px #ffffff08,0 0 0 55px #ffffff06}.ek-welcome-copy{position:relative;z-index:2;max-width:270px}.ek-eyebrow{display:block;font-size:10px;letter-spacing:.14em;font-weight:800;color:#6c9c7f;margin-bottom:8px}.ek-welcome .ek-eyebrow{color:#b7f4d0}.ek-welcome h2{font-size:34px;line-height:1.03;letter-spacing:-.055em;margin:0 0 10px;font-weight:850}.ek-welcome h2 span{color:#9ff0bf}.ek-welcome p{font-size:12px;line-height:1.55;color:#d7f4e2;max-width:220px;margin:0 0 17px}.ek-hero-cta{display:inline-flex;align-items:center;gap:20px;border:0;border-radius:13px;background:white;color:#08643a;padding:12px 14px;font-size:12px;font-weight:800;min-height:42px}.ek-hero-cta span{font-size:16px}.ek-orb{position:absolute;right:12px;bottom:24px;width:122px;height:122px;border-radius:50%;background:linear-gradient(145deg,#8cf0b7,#16a35e);display:grid;place-items:center;box-shadow:inset -10px -12px 24px #07673c30,0 15px 30px #003f251f}.ek-orb:before,.ek-orb:after{content:"";position:absolute;border:1px solid #ffffff60;border-radius:50%;inset:10px}.ek-orb:after{inset:22px}.ek-orb-inner{width:62px;height:62px;border-radius:21px;display:grid;place-items:center;background:#fff;color:#087747;font-size:20px;font-weight:900;letter-spacing:-.08em;box-shadow:0 6px 18px #00552c30;transform:rotate(-8deg)}.ek-orb-dot{position:absolute;z-index:3;color:white;font-size:20px}.dot-one{top:8px;right:25px}.dot-two{left:8px;bottom:17px;font-size:28px}
+.ek-home-section{margin-top:27px}.ek-home-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.ek-home-section-head h2{font-size:21px;letter-spacing:-.045em;margin:0;font-weight:850}.ek-quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.ek-quick-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:7px;padding:15px 14px 16px;border:1px solid #e5ece6;border-radius:19px;background:#fff;color:var(--text);min-height:135px;box-shadow:0 5px 15px #17291d06}.ek-quick-card:active{transform:scale(.98)}.ek-quick-icon{display:grid;place-items:center;width:39px;height:39px;border-radius:13px;font-size:22px;font-weight:700}.ek-quick-icon.mint{background:#e1f7eb;color:#087747}.ek-quick-icon.blue{background:#e8f1ff;color:#3569ba}.ek-quick-icon.violet{background:#f0eaff;color:#7950b4}.ek-quick-icon.amber{background:#fff1d9;color:#a96b0a}.ek-quick-card strong{font-size:13px;font-weight:800}.ek-quick-card small{font-size:11px;color:var(--muted)}.ek-quick-arrow{position:absolute;right:13px;top:13px;color:#a3b3a8;font-size:15px}.ek-tip-card{display:flex;align-items:flex-start;gap:12px;margin:17px 0 20px;padding:15px;border:1px solid #dcefe2;border-radius:18px;background:#eef8f1}.ek-tip-icon{width:34px;height:34px;flex:0 0 auto;display:grid;place-items:center;border-radius:11px;background:#d7f1e0;color:#087747}.ek-tip-card strong{font-size:13px}.ek-tip-card p{font-size:11px;color:#617668;line-height:1.5;margin:4px 0 0}
+body{padding-bottom:calc(92px + env(safe-area-inset-bottom))}body[data-ek-page="home"] #ekDirectoryPage,body[data-ek-page="home"] #ekToolsPage{display:none!important}body[data-ek-page="directory"] #ekHomePage,body[data-ek-page="tools"] #ekHomePage{display:none!important}body[data-ek-page="directory"] #ekDirectoryPage{display:block!important}body[data-ek-page="tools"] #ekToolsPage{display:block!important}
+.sectionhead{margin:8px 0 14px;align-items:end}.sectionhead h2{font-size:23px;letter-spacing:-.04em;font-weight:850}.muted{color:var(--muted);font-size:11px}.chips{padding:5px 0 12px}.chip{border-radius:999px!important;padding:8px 13px!important;background:#fff!important;border:1px solid var(--line)!important;color:#627267!important;font-size:11px!important}.chip.active{background:#e0f5e8!important;border-color:#b5e5c7!important;color:#087747!important}.grid{gap:11px}.card{border-radius:18px!important;border:1px solid #e4ece6!important;box-shadow:0 4px 16px #14261c06;padding:14px!important;background:#fff!important}.card h3{font-size:14px;font-weight:800}.card p{font-size:12px;color:var(--muted);line-height:1.5}.card a{color:var(--ek-green);font-size:12px;font-weight:750}.brandimg,.brandfallback{border-radius:12px!important}.tools{gap:11px}.tool{border-radius:18px!important;border:1px solid #e1eae3!important;background:white!important;padding:15px!important}.tool h3{font-size:14px}.tool p{font-size:12px;color:var(--muted)}.tool input,.tool textarea,.tool select{border:1px solid var(--line)!important;border-radius:12px!important;background:#f8fbf9!important;padding:11px!important;font-size:13px}.tool button{border-radius:12px!important}
+.ek-bottom-nav{height:69px;left:12px;right:12px;bottom:calc(9px + env(safe-area-inset-bottom));border:1px solid #e0e9e2;background:rgba(255,255,255,.94);box-shadow:0 8px 32px #11291b1c;border-radius:23px;padding:6px 7px;backdrop-filter:blur(22px)}.ek-nav-item{color:#829087;font-size:10px;font-weight:700;gap:3px}.ek-nav-icon{font-size:21px}.ek-nav-item.active{background:#e4f6eb;color:#087747}.ek-nav-item.active .ek-nav-icon{transform:translateY(-1px)}#openChatBtn{position:static;inset:auto;width:auto;height:auto;min-height:0;padding:6px 8px;border:0;border-radius:16px;background:transparent;color:inherit;box-shadow:none;display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:700;gap:3px}#openChatBtn::before{content:none}#openChatBtn .ek-nav-icon{font-size:21px}#openChatBtn.active{background:#e4f6eb;color:#087747}
+@media(min-width:650px){header,main,footer{padding-left:24px;padding-right:24px}.ek-welcome{padding:32px;min-height:250px}.ek-orb{right:35px;width:150px;height:150px}.ek-quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.ek-quick-card{min-height:150px}}
+@media(max-width:390px){header,main,footer{width:100%;padding-left:14px;padding-right:14px}.ek-welcome{padding:21px 17px;min-height:220px}.ek-welcome h2{font-size:30px}.ek-orb{width:95px;height:95px;right:7px;bottom:28px}.ek-orb-inner{width:49px;height:49px;border-radius:16px}.ek-quick-grid{gap:8px}.ek-quick-card{padding:12px;min-height:130px}.ek-quick-card strong{font-size:12px}.ek-quick-card small{font-size:10px}.ek-bottom-nav{left:7px;right:7px}}
+
+
+.ek-myid{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#102b1e;border:1px solid #2b6042;border-radius:15px;padding:12px;margin-bottom:16px}.ek-myid span{width:100%;font-size:12px;color:#a4c1ad}.ek-myid strong{font-size:1.15rem;letter-spacing:1px;color:#55f3a0;flex:1}.ek-group-create{margin-top:18px;padding-top:14px;border-top:1px solid #234a34;display:grid;gap:8px}.ek-group-create h3,.chat-start h3{font-size:15px;margin:10px 0 5px}.ek-group-list{display:grid;gap:7px}.ek-group-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#102b1e;border:1px solid #2b6042;color:#e4fff0;border-radius:13px;padding:11px}.ek-group-item strong{flex:1}.ek-group-item small{color:#a4c1ad}
+.ek-call-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:9px 10px;border-bottom:1px solid var(--line);background:var(--panel)}.ek-call-actions button{border:1px solid var(--line);border-radius:11px;padding:9px 12px;background:var(--panel2,var(--panel));color:var(--text);font-weight:700}.ek-call-actions .ek-end-call{background:#a52332;color:white;border-color:#a52332}.ek-call-state{font-size:12px;color:var(--muted);flex:1;min-width:100px}.ek-call-screen{position:fixed;inset:0;z-index:10020;background:#07110c;color:#effff5;display:flex;flex-direction:column;gap:12px;padding:16px;overflow:auto}.ek-call-screen[hidden]{display:none}.ek-call-screen h3{margin:4px 0}.ek-call-videos{display:grid;gap:10px;grid-template-columns:1fr}.ek-call-videos video{width:100%;max-height:44vh;object-fit:cover;background:#15241b;border-radius:16px}.ek-call-screen button{border:0;border-radius:12px;padding:12px 14px;font-weight:800}.ek-call-buttons{display:flex;gap:8px;flex-wrap:wrap}.ek-call-accept{background:#35df8b;color:#052516}.ek-call-decline{background:#b82c3c;color:white}.ek-voice-record{background:#244f38!important;color:#e8fff0!important;border:1px solid #3c8158!important}
+.chat-start{overflow:auto;max-height:65vh}body[data-theme="light"] .ek-myid,body[data-theme="light"] .ek-group-item{background:#edf3ef;color:#18251d;border-color:#d7e2da}body[data-theme="light"] .ek-myid strong{color:#087747}
+</style>
+<style id="ek-chat-page-and-auth-fix">
+/* Chat opens as its own full-screen page, not a modal overlay. */
+body.ek-chat-page>header,body.ek-chat-page>main,body.ek-chat-page>footer,body.ek-chat-page>#ekBottomNav{display:none!important}
+body.ek-chat-page{padding:0!important;margin:0!important;overflow:hidden!important;background:#07150f!important}
+body.ek-chat-page #chatApp.chatback:not([hidden]){position:fixed;inset:0;z-index:10001;display:block;overflow:auto;padding:0;margin:0;background:#07150f!important;backdrop-filter:none!important}
+body.ek-chat-page #chatApp .chat-shell{width:100%;max-width:none;height:100dvh;min-height:100dvh;border:0;border-radius:0;box-shadow:none}
+#openLogin[hidden]{display:none!important}
+#userPill{cursor:pointer}
+@media(min-width:760px){body.ek-chat-page #chatApp .chat-shell{max-width:none}}
+</style>
+<style id="ek-notification-system-css">
+#notificationPermissionBtn{position:relative}#notificationPermissionBtn.ek-notifications-on{color:#087747;background:#e4f6eb;border-color:#a7dfbd}
+.ek-notice-toast{position:fixed;z-index:20000;left:16px;right:16px;top:calc(12px + env(safe-area-inset-top));max-width:520px;margin:auto;padding:13px 16px;border:1px solid #b8e3c8;border-radius:15px;background:#f0fff5;color:#123b26;box-shadow:0 10px 34px #0002;font-weight:700;animation:ekNoticeIn .2s ease-out}
+@keyframes ekNoticeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.ek-notice-toast{animation:none}}
+</style>
+<style id="ek-voice-alert-consent-css">
+#ekVoiceConsent[hidden]{display:none!important}#ekVoiceConsent{position:fixed;inset:0;z-index:30000;display:grid;place-items:center;padding:20px;background:rgba(2,10,7,.76);backdrop-filter:blur(9px)}.ek-voice-card{width:min(100%,420px);padding:24px;border:1px solid #315846;border-radius:24px;background:#0d1d15;color:#eefcf3;box-shadow:0 24px 80px #0008}.ek-voice-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:#173c2b;font-size:27px;margin-bottom:14px}.ek-voice-card h2{margin:0 0 8px;font-size:1.35rem}.ek-voice-card p{color:#b6cbbd;line-height:1.5;margin:0 0 18px}.ek-voice-actions{display:grid;gap:9px}.ek-voice-actions button{border-radius:13px;padding:13px 15px;font-weight:800;cursor:pointer}.ek-voice-enable{border:0;background:#79efb3;color:#082416}.ek-voice-later{border:1px solid #355443;background:#13271c;color:#e3f6e9}
+</style>
+<style id="ek-complete-dark-mode-fix">
+/* Fix: make every major surface follow the selected dark theme, including older hard-coded light styles. */
+body[data-theme="dark"]{color-scheme:dark!important;background:radial-gradient(circle at top right,#10291d 0,#07150f 48%,#050d09 100%)!important;color:#f4fff8!important}
+body[data-theme="dark"] input,
+body[data-theme="dark"] select,
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] input#search,
+body[data-theme="dark"] .countryline,
+body[data-theme="dark"] .countryline select,
+body[data-theme="dark"] .chip,
+body[data-theme="dark"] .ek-translate-box,
+body[data-theme="dark"] #ekTranslateInput,
+body[data-theme="dark"] #ekTranslateOutput,
+body[data-theme="dark"] #ekTranslateFrom,
+body[data-theme="dark"] #ekTranslateTo{background-color:#0b1c13!important;color:#f2fff7!important;border-color:#315541!important;color-scheme:dark}
+body[data-theme="dark"] input::placeholder,
+body[data-theme="dark"] textarea::placeholder{color:#9db7a7!important;opacity:1}
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .tool,
+body[data-theme="dark"] .ek-quick-card,
+body[data-theme="dark"] .ek-dash-stat,
+body[data-theme="dark"] .settings-card,
+body[data-theme="dark"] .modal,
+body[data-theme="dark"] .settings-group,
+body[data-theme="dark"] .settings-row,
+body[data-theme="dark"] .countryline,
+body[data-theme="dark"] .chat-shell,
+body[data-theme="dark"] .chat-messages,
+body[data-theme="dark"] .ek-ai-panel,
+body[data-theme="dark"] .ek-ai-msg,
+body[data-theme="dark"] .ek-group-item,
+body[data-theme="dark"] .ek-myid{background-color:#0d2117!important;color:#f4fff8!important;border-color:#294d38!important}
+body[data-theme="dark"] .ek-quick-card,
+body[data-theme="dark"] .chip{background:#10271b!important;color:#eafff1!important;border-color:#315b41!important}
+body[data-theme="dark"] .chip.active{background:#16452d!important;color:#7cf0ad!important;border-color:#34865a!important}
+body[data-theme="dark"] .ek-bottom-nav{background:rgba(7,21,15,.97)!important;border-color:#294d38!important}
+body[data-theme="dark"] .ek-nav-item{color:#b4cabb!important}
+body[data-theme="dark"] .ek-nav-item.active{background:#16452d!important;color:#7cf0ad!important}
+body[data-theme="dark"] .secondarybtn,
+body[data-theme="dark"] .header-iconbtn:not(.install){background:#132a1d!important;color:#eafff1!important;border-color:#315541!important}
+body[data-theme="dark"] .chat-top,
+body[data-theme="dark"] .chat-start,
+body[data-theme="dark"] .chat-contact,
+body[data-theme="dark"] .chat-compose,
+body[data-theme="dark"] .ek-ai-head,
+body[data-theme="dark"] .ek-ai-suggestions button{background:#132a1d!important;color:#effff5!important;border-color:#315541!important}
+body[data-theme="dark"] .chat-bubble{background:#183625!important;color:#f4fff8!important;border-color:#315541!important}
+body[data-theme="dark"] .muted,
+body[data-theme="dark"] .smalltext,
+body[data-theme="dark"] .ek-muted{color:#a9c6b5!important}
+/* Catch inline light surfaces left by older components without changing photos or illustrations. */
+body[data-theme="dark"] [style*="background:white"],
+body[data-theme="dark"] [style*="background: white"],
+body[data-theme="dark"] [style*="background:#fff"],
+body[data-theme="dark"] [style*="background: #fff"],
+body[data-theme="dark"] [style*="background:#ffffff"],
+body[data-theme="dark"] [style*="background: #ffffff"],
+body[data-theme="dark"] [style*="background-color:white"],
+body[data-theme="dark"] [style*="background-color: white"],
+body[data-theme="dark"] [style*="background-color:#fff"],
+body[data-theme="dark"] [style*="background-color: #fff"]{background-color:#0d2117!important;color:#f4fff8!important;border-color:#294d38!important}
+body[data-theme="dark"] #ekSplash{background:radial-gradient(circle at 50% 35%,#143b27 0,#07150f 70%)!important;color:#f4fff8!important}
+</style>
+</head><body>
+<div id="ekSplash" role="status" aria-label="Loading EverydayKit"><div class="ekSplashLogo">EK</div><div class="ekSplashName">EverydayKit</div><div class="ekSplashTag">TOOLS FOR EVERY DAY</div><div class="ekSplashTrack" aria-hidden="true"></div></div>
+<div id="ekVoiceConsent" hidden role="dialog" aria-modal="true" aria-labelledby="ekVoiceConsentTitle" aria-describedby="ekVoiceConsentDesc">
+  <section class="ek-voice-card"><div class="ek-voice-icon" aria-hidden="true">🔊</div><h2 id="ekVoiceConsentTitle">Enable voice alerts?</h2><p id="ekVoiceConsentDesc">EverydayKit can speak short alert messages aloud while you use the app. You can change this choice later. Browser notifications are a separate permission.</p><div class="ek-voice-actions"><button type="button" class="ek-voice-enable" id="ekVoiceEnableBtn">Enable voice alerts</button><button type="button" class="ek-voice-later" id="ekVoiceLaterBtn">Not now</button></div></section>
+</div>
+<header><div class="brandrow"><div class="brand"><div class="logo">EK</div> EverydayKit <span class="tag">GLOBAL DIRECTORY</span></div><div class="header-actions"><button class="header-iconbtn theme-toggle" id="themeToggleBtn" type="button" aria-label="Switch to light mode" title="Switch to light mode">☀ <span class="theme-label">Light</span></button><button class="header-iconbtn install" id="installAppBtn" type="button" aria-label="Install EverydayKit" title="Install EverydayKit">⬇ <span class="install-label">Install</span></button><button class="header-iconbtn" id="notificationPermissionBtn" type="button" aria-label="Enable notifications" title="Enable notifications">🔔 <span class="theme-label">Alerts</span><span id="notificationBadge" hidden style="display:none"></span></button><button class="header-iconbtn settings" id="openSettingsBtn" type="button" aria-label="App settings" title="App settings">⚙</button></div></div><h1>Everything useful,<br><span>for your country.</span></h1><p class="intro">Choose a country to see popular websites, local banks, payment services, restaurants, delivery apps and useful tools. Exact availability depends on each provider.</p>
+<div class="controls"><div class="countryline"><span class="flag" id="flag">🌍</span><select id="country" aria-label="Choose country"><option value="">Choose a country…</option><option value="AF">Afghanistan</option><option value="AL">Albania</option><option value="DZ">Algeria</option><option value="AD">Andorra</option><option value="AO">Angola</option><option value="AG">Antigua and Barbuda</option><option value="AR">Argentina</option><option value="AM">Armenia</option><option value="AU">Australia</option><option value="AT">Austria</option><option value="AZ">Azerbaijan</option><option value="BS">Bahamas</option><option value="BH">Bahrain</option><option value="BD">Bangladesh</option><option value="BB">Barbados</option><option value="BY">Belarus</option><option value="BE">Belgium</option><option value="BZ">Belize</option><option value="BJ">Benin</option><option value="BT">Bhutan</option><option value="BO">Bolivia</option><option value="BA">Bosnia and Herzegovina</option><option value="BW">Botswana</option><option value="BR">Brazil</option><option value="BN">Brunei</option><option value="BG">Bulgaria</option><option value="BF">Burkina Faso</option><option value="BI">Burundi</option><option value="CV">Cabo Verde</option><option value="KH">Cambodia</option><option value="CM">Cameroon</option><option value="CA">Canada</option><option value="CF">Central African Republic</option><option value="TD">Chad</option><option value="CL">Chile</option><option value="CN">China</option><option value="CO">Colombia</option><option value="KM">Comoros</option><option value="CG">Congo</option><option value="CR">Costa Rica</option><option value="CI">Côte d’Ivoire</option><option value="HR">Croatia</option><option value="CU">Cuba</option><option value="CY">Cyprus</option><option value="CZ">Czechia</option><option value="DK">Denmark</option><option value="DJ">Djibouti</option><option value="DM">Dominica</option><option value="DO">Dominican Republic</option><option value="CD">DR Congo</option><option value="EC">Ecuador</option><option value="EG">Egypt</option><option value="SV">El Salvador</option><option value="GQ">Equatorial Guinea</option><option value="ER">Eritrea</option><option value="EE">Estonia</option><option value="SZ">Eswatini</option><option value="ET">Ethiopia</option><option value="FJ">Fiji</option><option value="FI">Finland</option><option value="FR">France</option><option value="GA">Gabon</option><option value="GM">Gambia</option><option value="GE">Georgia</option><option value="DE">Germany</option><option value="GH">Ghana</option><option value="GR">Greece</option><option value="GD">Grenada</option><option value="GT">Guatemala</option><option value="GN">Guinea</option><option value="GW">Guinea-Bissau</option><option value="GY">Guyana</option><option value="HT">Haiti</option><option value="HN">Honduras</option><option value="HU">Hungary</option><option value="IS">Iceland</option><option value="IN">India</option><option value="ID">Indonesia</option><option value="IR">Iran</option><option value="IQ">Iraq</option><option value="IE">Ireland</option><option value="IL">Israel</option><option value="IT">Italy</option><option value="JM">Jamaica</option><option value="JP">Japan</option><option value="JO">Jordan</option><option value="KZ">Kazakhstan</option><option value="KE">Kenya</option><option value="KI">Kiribati</option><option value="KW">Kuwait</option><option value="KG">Kyrgyzstan</option><option value="LA">Laos</option><option value="LV">Latvia</option><option value="LB">Lebanon</option><option value="LS">Lesotho</option><option value="LR">Liberia</option><option value="LY">Libya</option><option value="LI">Liechtenstein</option><option value="LT">Lithuania</option><option value="LU">Luxembourg</option><option value="MG">Madagascar</option><option value="MW">Malawi</option><option value="MY">Malaysia</option><option value="MV">Maldives</option><option value="ML">Mali</option><option value="MT">Malta</option><option value="MH">Marshall Islands</option><option value="MR">Mauritania</option><option value="MU">Mauritius</option><option value="MX">Mexico</option><option value="FM">Micronesia</option><option value="MD">Moldova</option><option value="MC">Monaco</option><option value="MN">Mongolia</option><option value="ME">Montenegro</option><option value="MA">Morocco</option><option value="MZ">Mozambique</option><option value="MM">Myanmar</option><option value="NA">Namibia</option><option value="NR">Nauru</option><option value="NP">Nepal</option><option value="NL">Netherlands</option><option value="NZ">New Zealand</option><option value="NI">Nicaragua</option><option value="NE">Niger</option><option value="NG">Nigeria</option><option value="KP">North Korea</option><option value="MK">North Macedonia</option><option value="NO">Norway</option><option value="OM">Oman</option><option value="PK">Pakistan</option><option value="PW">Palau</option><option value="PS">Palestine</option><option value="PA">Panama</option><option value="PG">Papua New Guinea</option><option value="PY">Paraguay</option><option value="PE">Peru</option><option value="PH">Philippines</option><option value="PL">Poland</option><option value="PT">Portugal</option><option value="QA">Qatar</option><option value="RO">Romania</option><option value="RU">Russia</option><option value="RW">Rwanda</option><option value="KN">Saint Kitts and Nevis</option><option value="LC">Saint Lucia</option><option value="VC">Saint Vincent and the Grenadines</option><option value="WS">Samoa</option><option value="SM">San Marino</option><option value="ST">Sao Tome and Principe</option><option value="SA">Saudi Arabia</option><option value="SN">Senegal</option><option value="RS">Serbia</option><option value="SC">Seychelles</option><option value="SL">Sierra Leone</option><option value="SG">Singapore</option><option value="SK">Slovakia</option><option value="SI">Slovenia</option><option value="SB">Solomon Islands</option><option value="SO">Somalia</option><option value="ZA">South Africa</option><option value="KR">South Korea</option><option value="SS">South Sudan</option><option value="ES">Spain</option><option value="LK">Sri Lanka</option><option value="SD">Sudan</option><option value="SR">Suriname</option><option value="SE">Sweden</option><option value="CH">Switzerland</option><option value="SY">Syria</option><option value="TJ">Tajikistan</option><option value="TZ">Tanzania</option><option value="TH">Thailand</option><option value="TL">Timor-Leste</option><option value="TG">Togo</option><option value="TO">Tonga</option><option value="TT">Trinidad and Tobago</option><option value="TN">Tunisia</option><option value="TR">Türkiye</option><option value="TM">Turkmenistan</option><option value="TV">Tuvalu</option><option value="UG">Uganda</option><option value="UA">Ukraine</option><option value="AE">United Arab Emirates</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="UY">Uruguay</option><option value="UZ">Uzbekistan</option><option value="VU">Vanuatu</option><option value="VA">Vatican City</option><option value="VE">Venezuela</option><option value="VN">Vietnam</option><option value="YE">Yemen</option><option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option></select></div><input id="search" type="search" placeholder="Search services, banks, restaurants…"></div>
+<div class="accountbar"><button class="primarybtn" id="openLogin">Log in / Create account</button><button class="secondarybtn" id="locateBtn">📍 Show my location</button><span id="userPill" class="userpill" style="display:none"></span></div>
+
+<div id="installHelp" class="accountstatus" aria-live="polite"></div>
+<div id="accountStatus" class="accountstatus">You can browse without an account. Location is only requested when you tap the location button.</div>
+</header><main><section id="ekHomePage" class="ek-page ek-home-page"><div class="ek-welcome"><div class="ek-welcome-copy"><span class="ek-eyebrow">YOUR EVERYDAY TOOLKIT</span><h2>Make every day<br><span>easier.</span></h2><p>Useful tools and trusted services, all in one place.</p><button type="button" class="ek-hero-cta" data-go="directory">Explore services <span>↗</span></button></div><div class="ek-orb" aria-hidden="true"><div class="ek-orb-inner">EK</div><span class="ek-orb-dot dot-one">✦</span><span class="ek-orb-dot dot-two">⌁</span></div></div><div class="ek-home-section"><div class="ek-home-section-head"><div><span class="ek-eyebrow">QUICK ACCESS</span><h2>What do you need?</h2></div></div><div class="ek-quick-grid"><button type="button" class="ek-quick-card" data-go="tools"><span class="ek-quick-icon mint">⌗</span><strong>Everyday tools</strong><small>Calculator, QR & more</small><span class="ek-quick-arrow">↗</span></button><button type="button" class="ek-quick-card" data-go="directory"><span class="ek-quick-icon blue">⌕</span><strong>Explore services</strong><small>Find useful websites</small><span class="ek-quick-arrow">↗</span></button><button type="button" class="ek-quick-card" data-action="chat"><span class="ek-quick-icon violet">✉</span><strong>Open Chat</strong><small>Message people privately</small><span class="ek-quick-arrow">↗</span></button><button type="button" class="ek-quick-card" data-go="tools"><span class="ek-quick-icon amber">▦</span><strong>More tools</strong><small>Calculate, convert & create</small><span class="ek-quick-arrow">↗</span></button></div></div><div class="ek-tip-card"><div class="ek-tip-icon">✦</div><div><strong>Made to be useful.</strong><p>Browse freely. Sign in only when you want account features like chat.</p></div></div></section><section id="ekDashboardPage" class="ek-page" hidden><div class="sectionhead"><div><h2>My dashboard</h2><span class="muted">Your shortcuts, saved services and recent activity stay on this device.</span></div></div><div class="ek-dashboard-stats"><article class="ek-dash-stat"><span>★</span><div><strong id="ekDashFavCount">0</strong><small>Saved services</small></div></article><article class="ek-dash-stat"><span>↻</span><div><strong id="ekDashRecentCount">0</strong><small>Recent visits</small></div></article><article class="ek-dash-stat"><span>⌗</span><div><strong id="ekDashToolCount">4</strong><small>Quick tools</small></div></article></div><section class="ek-dashboard-block"><div class="ek-dashboard-title"><div><span class="ek-eyebrow">YOUR PICKS</span><h3>Favorite services</h3></div><button type="button" class="ek-dash-link" data-go="directory">Explore more ↗</button></div><div id="ekDashFavorites" class="ek-dashboard-list"></div></section><section class="ek-dashboard-block"><div class="ek-dashboard-title"><div><span class="ek-eyebrow">PICK UP WHERE YOU LEFT OFF</span><h3>Recently visited</h3></div><button type="button" class="ek-dash-link" id="ekClearRecent">Clear</button></div><div id="ekDashRecent" class="ek-dashboard-list"></div></section><section class="ek-dashboard-block"><div class="ek-dashboard-title"><div><span class="ek-eyebrow">FAST ACCESS</span><h3>Quick tools</h3></div><button type="button" class="ek-dash-link" data-go="tools">All tools ↗</button></div><div class="ek-dashboard-tools"><button type="button" data-go="tools" data-tool-shortcut="Calculator"><span>🧮</span><strong>Calculator</strong><small>Quick calculations</small></button><button type="button" data-go="tools" data-tool-shortcut="QR code maker"><span>🔗</span><strong>QR code maker</strong><small>Create a QR code</small></button><button type="button" data-go="tools" data-tool-shortcut="Word counter"><span>📝</span><strong>Word counter</strong><small>Count words</small></button><button type="button" data-go="tools" data-tool-shortcut="Distance converter"><span>📏</span><strong>Distance converter</strong><small>Convert distance</small></button></div></section><p class="ek-dashboard-footnote">Favorites and recent visits are saved locally in this browser. They are not synced to other devices.</p></section><div id="ekDirectoryPage" class="ek-page"><div class="sectionhead"><h2 id="directoryTitle">Popular worldwide</h2><span class="muted" id="count">Loading</span></div><nav class="chips" id="categories"></nav><div class="grid" id="directory"></div><div class="empty" id="empty">No matching services. Try another category or search.</div></div>
+<div id="ekToolsPage" class="ek-page" hidden><div class="sectionhead"><h2>Free everyday tools</h2><span class="muted">Choose a tool to use it here</span></div><div class="tools">
+<section class="tool"><h3>🧮 Calculator</h3><p>Basic arithmetic.</p><input id="calcInput" placeholder="Example: (25 + 5) * 2"><button onclick="calculate()">Calculate</button><div id="calcResult" class="result"></div></section>
+<section class="tool"><h3>🔗 QR code maker</h3><p>Create a QR code from text or a link. Internet required.</p><input id="qrInput" placeholder="Paste a link or text"><button onclick="makeQR()">Create QR</button><div id="qrResult" class="result"></div></section>
+<section class="tool" id="translationStudio"><h3>🌍 Translation Studio</h3><p>Translate text between popular languages. Internet is required for translation.</p><div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:7px;align-items:center;margin:10px 0"><select id="ekTranslateFrom" aria-label="Translate from"><option value="en">English</option><option value="so">Somali</option><option value="ar">Arabic</option><option value="fr">French</option><option value="es">Spanish</option><option value="it">Italian</option><option value="de">German</option><option value="ru">Russian</option><option value="am">Amharic</option><option value="tr">Turkish</option><option value="sw">Swahili</option><option value="pt">Portuguese</option><option value="zh">Chinese</option><option value="hi">Hindi</option></select><button type="button" id="ekTranslateSwap" class="secondarybtn" style="padding:9px 10px;min-height:40px" aria-label="Swap languages">⇄</button><select id="ekTranslateTo" aria-label="Translate to"><option value="so" selected>Somali</option><option value="en">English</option><option value="ar">Arabic</option><option value="fr">French</option><option value="es">Spanish</option><option value="it">Italian</option><option value="de">German</option><option value="ru">Russian</option><option value="am">Amharic</option><option value="tr">Turkish</option><option value="sw">Swahili</option><option value="pt">Portuguese</option><option value="zh">Chinese</option><option value="hi">Hindi</option></select></div><textarea id="ekTranslateInput" rows="4" maxlength="4500" placeholder="Type or paste text to translate…" aria-label="Text to translate" style="width:100%;box-sizing:border-box"></textarea><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:7px 0 10px"><small id="ekTranslateCount" class="muted">0 / 4500</small><button type="button" id="ekTranslateClear" class="secondarybtn" style="padding:8px 11px;min-height:36px">Clear</button></div><button type="button" id="ekTranslateBtn" style="width:100%">🌍 Translate</button><div id="ekTranslateStatus" class="result" aria-live="polite" style="margin-top:10px;display:none"></div><textarea id="ekTranslateOutput" rows="4" readonly aria-label="Translated text" placeholder="Your translation will appear here…" style="width:100%;box-sizing:border-box;margin-top:10px"></textarea><button type="button" id="ekTranslateCopy" class="secondarybtn" style="width:100%;margin-top:8px">Copy translation</button><p class="muted" style="font-size:.75rem;margin-top:9px">Translation service provided by MyMemory. Results can be imperfect; check important translations.</p></section>
+<section class="tool"><h3>📝 Word counter</h3><p>Count words and characters.</p><textarea id="wordInput" rows="2" placeholder="Type or paste text"></textarea><button onclick="countWords()">Count</button><div id="wordResult" class="result"></div></section>
+<section class="tool"><h3>📏 Distance converter</h3><p>Convert kilometres and miles.</p><input id="unitInput" type="number" min="0" placeholder="Distance"><select id="unitType"><option value="km-mi">Kilometres → Miles</option><option value="mi-km">Miles → Kilometres</option></select><button onclick="convertUnit()">Convert</button><div id="unitResult" class="result"></div></section>
+</div></div>
+<div class="notice" id="ekNotice"><strong>Important:</strong> This is an independent directory, not an official partner of the listed brands. The country selector changes the curated services shown, but it cannot guarantee a complete list of every business. Some countries have sample local listings; for a complete, live directory, we would need a business/location data API. Bank, payment, delivery and restaurant availability must be confirmed with the provider. Never share passwords, PINs or verification codes.</div>
+</main><section class="chatback" id="chatApp" hidden aria-label="EverydayKit Chat">
+ <div class="chat-shell">
+  <header class="chat-top"><div><strong>EverydayKit Chat</strong><small id="chatSubtitle">Private messages · sign in to start</small></div><button class="secondarybtn" id="closeChatBtn" type="button" aria-label="Close chat">✕</button></header>
+  <div class="chat-start" id="chatStart"><div class="ek-myid"><span>Your EverydayKit ID</span><strong id="myChatId">Sign in to get your ID</strong><button class="secondarybtn" id="copyMyChatId" type="button">Copy ID</button></div><h3>Message a friend</h3><p>Ask your friend for their EverydayKit ID. You do not need their email address.</p><div class="chat-find"><input id="chatFriendId" type="text" placeholder="Friend ID, e.g. EK-A1B2C3D4" autocomplete="off" maxlength="20"><button class="primarybtn" id="findChatUser" type="button">Chat</button></div><div class="ek-group-create"><h3>Create a group</h3><input id="newGroupName" type="text" placeholder="Group name" maxlength="60"><textarea id="newGroupMembers" rows="2" placeholder="Friend IDs separated by commas (optional)"></textarea><button class="primarybtn" id="createChatGroup" type="button">＋ Create group</button></div><h3>Your groups</h3><div id="chatGroupList" class="ek-group-list"><p class="smalltext">Your groups will appear here.</p></div><p class="smalltext" id="chatStatus">Sign in with your EverydayKit account first.</p></div>
+  <div class="chat-room" id="chatRoom" hidden><div class="chat-contact"><button class="secondarybtn" id="backChatBtn" type="button">← Chats</button><strong id="chatContactName">Chat</strong><span id="chatConnection">Connecting…</span><button class="secondarybtn" id="addGroupMemberBtn" type="button" hidden>＋ Add</button></div><div class="ek-call-actions"><button id="callVoiceBtn" type="button">📞 Voice call</button><button id="callVideoBtn" type="button">📹 Video call</button><span id="callState" class="ek-call-state">Calls work in private chats on HTTPS.</span><button id="endCallBtn" class="ek-end-call" type="button" hidden>End call</button></div><div class="chat-messages" id="chatMessages" aria-live="polite"></div><div class="chat-stickers" aria-label="Send a sticker"><button type="button" data-sticker="❤️">❤️</button><button type="button" data-sticker="😂">😂</button><button type="button" data-sticker="🔥">🔥</button><button type="button" data-sticker="👍">👍</button><button type="button" data-sticker="😭">😭</button><button type="button" data-sticker="🎉">🎉</button></div><div class="chat-compose"><textarea id="chatText" rows="1" maxlength="2000" placeholder="Write a message…"></textarea><label class="chat-upload" for="chatVideo">🎥 Video</label><input id="chatVideo" type="file" accept="video/*" hidden><button class="chat-upload ek-voice-record" id="recordVoiceBtn" type="button">🎙️ Voice</button><button class="primarybtn" id="sendChatBtn" type="button">Send</button></div><p class="smalltext chat-hint">Videos up to 25 MB. Only send videos you have permission to share.</p></div>
+ </div>
+</section>
+<div class="modalback" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+<div class="modal"><div class="modalhead"><h2 id="loginTitle">EverydayKit account</h2><button class="secondarybtn" id="closeLogin" aria-label="Close">✕</button></div>
+<p class="smalltext">Sign up or log in with your email and password.</p>
+<label for="displayName">Display name (for new accounts)</label><input id="displayName" autocomplete="nickname" placeholder="Your display name" maxlength="60">
+<label for="accountEmail">Email</label><input id="accountEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+<label for="accountPass">Password</label><input id="accountPass" type="password" autocomplete="current-password" placeholder="At least 6 characters" minlength="6" required>
+<button class="primarybtn full" id="saveAccount">Create account</button>
+<button class="secondarybtn full auth-google" id="googleAccount" type="button">Continue with Google</button><div class="auth-divider">or use email and password</div>
+<button class="secondarybtn full" id="loginAccount">Log in</button><button class="secondarybtn full" id="forgotPassword" type="button">Forgot password?</button>
+<button class="secondarybtn full" id="logoutBtn" style="display:none">Log out</button>
+<div id="loginMessage" class="result"></div>
+</div></div>
+<div class="settingsback" id="appSettings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="settings-card"><div class="modalhead"><h2 id="settingsTitle">Settings</h2><button class="secondarybtn" id="closeSettingsBtn" type="button" aria-label="Close settings">✕</button></div><p>Personalise how EverydayKit looks and works on this device.</p>
+<div class="settings-group"><h3>Appearance</h3><div class="settings-row"><div><strong>Theme</strong><div class="smalltext">Choose day, night, or follow your device</div></div><select id="themeSetting" aria-label="Theme"><option value="light">Day / Light</option><option value="dark">Night / Dark</option><option value="system">System default</option></select></div>
+<div class="settings-row"><div><strong>Accent colour</strong><div class="smalltext">Change the highlight colour</div></div><select id="accentSetting" aria-label="Accent colour"><option value="green">Green</option><option value="blue">Blue</option><option value="purple">Purple</option><option value="orange">Orange</option></select></div>
+<div class="settings-row"><div><strong>Text size</strong><div class="smalltext">Make text easier to read</div></div><select id="textSizeSetting" aria-label="Text size"><option value="normal">Normal</option><option value="small">Small</option><option value="large">Large</option></select></div>
+<div class="settings-row"><label for="compactSetting"><strong>Compact layout</strong><div class="smalltext">Use tighter spacing to show more content</div></label><input id="compactSetting" type="checkbox" class="settings-check"></div>
+<div class="settings-row"><label for="motionSetting"><strong>Reduce animations</strong><div class="smalltext">Limit decorative movement</div></label><input id="motionSetting" type="checkbox" class="settings-check"></div></div>
+<div class="settings-group"><h3>App</h3><div class="settings-row"><div><strong>App version</strong><div class="smalltext">EverydayKit Web App</div></div><span class="tag">1.5.0</span></div><div class="settings-row"><div><strong>Installation</strong><div class="smalltext" id="installSettingStatus">Checking app status…</div></div><button class="secondarybtn" id="settingsInstallBtn" type="button">Install</button></div><div class="settings-row"><div><strong>Privacy</strong><div class="smalltext">Location is only requested when you tap the location button. Theme preferences stay on this device.</div></div><span aria-hidden="true">🔒</span></div><div class="settings-row"><div><strong>Reset preferences</strong><div class="smalltext">Return appearance settings to defaults</div></div><button class="secondarybtn" id="resetSettingsBtn" type="button">Reset</button></div></div>
+<button class="primarybtn full" id="settingsDoneBtn" type="button">Done</button></div></div><nav id="ekBottomNav" class="ek-bottom-nav" aria-label="Main navigation">
+  <button type="button" class="ek-nav-item active" data-dest="home" aria-label="Home"><span class="ek-nav-icon">⌂</span><span>Home</span></button>
+  <button type="button" class="ek-nav-item" data-dest="dashboard" aria-label="My dashboard"><span class="ek-nav-icon">★</span><span>Saved</span></button>
+  <button type="button" class="ek-nav-item" data-dest="directory" aria-label="Explore directory"><span class="ek-nav-icon">⌕</span><span>Explore</span></button>
+  <button type="button" class="ek-nav-item" id="openChatBtn" data-dest="chat" aria-label="Open EverydayKit Chat" title="Chat"><span class="ek-nav-icon">💬</span><span>Chat</span></button>
+  <button type="button" class="ek-nav-item" data-dest="tools" aria-label="Everyday tools"><span class="ek-nav-icon">▦</span><span>Tools</span></button>
+  <button type="button" class="ek-nav-item" data-dest="settings" aria-label="Settings"><span class="ek-nav-icon">⚙</span><span>More</span></button>
+</nav>
+<footer>© <span id="year"></span> EverydayKit · Useful links, wherever you are.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const globalItems=[["Google", "Search & learning", "google.com", "Search the web, images and information.", "global"], ["YouTube", "Video & social", "youtube.com", "Watch videos, tutorials and Shorts.", "global"], ["WhatsApp", "Video & social", "whatsapp.com", "Messaging and calls where supported.", "global"], ["TikTok", "Video & social", "tiktok.com", "Short videos and creator content.", "global"], ["Instagram", "Video & social", "instagram.com", "Photos, reels and creators.", "global"], ["Facebook", "Video & social", "facebook.com", "People, groups and pages.", "global"], ["Wikipedia", "Learning", "wikipedia.org", "Free online encyclopedia.", "global"], ["Google Maps", "Travel", "maps.google.com", "Maps, directions and local places.", "global"], ["Gmail", "Productivity", "mail.google.com", "Email and attachments.", "global"], ["Google Drive", "Productivity", "drive.google.com", "Store and share files online.", "global"], ["Canva", "Create", "canva.com", "Design posters and social content.", "global"], ["ChatGPT", "Create", "chatgpt.com", "AI help for learning and ideas.", "global"], ["GitHub", "Create", "github.com", "Build and share software projects.", "global"], ["Amazon", "Shopping", "amazon.com", "Online shopping; delivery varies by country.", "global"], ["AliExpress", "Shopping", "aliexpress.com", "Shop products from international sellers.", "global"], ["eBay", "Shopping", "ebay.com", "New, used and collectible products.", "global"], ["Netflix", "Entertainment", "netflix.com", "Movies and series; subscription required.", "global"], ["Spotify", "Entertainment", "spotify.com", "Music and podcasts where available.", "global"], ["Booking.com", "Travel", "booking.com", "Hotels and accommodation.", "global"], ["Airbnb", "Travel", "airbnb.com", "Stays and experiences where available.", "global"], ["Skyscanner", "Travel", "skyscanner.net", "Compare flights and travel options.", "global"], ["Uber", "Travel", "uber.com", "Ride services in supported cities.", "global"], ["McDonald's", "Restaurants", "mcdonalds.com", "Menus and restaurant locations by market.", "global"], ["KFC", "Restaurants", "global.kfc.com", "Restaurant information and local menus.", "global"], ["Subway", "Restaurants", "subway.com", "Sandwiches and restaurant locations.", "global"], ["Starbucks", "Restaurants", "starbucks.com", "Drinks, food and store information.", "global"], ["Pizza Hut", "Restaurants", "pizzahut.com", "Menus and ordering where available.", "global"], ["Domino's", "Restaurants", "dominos.com", "Pizza ordering in supported regions.", "global"], ["PayPal", "Money services", "paypal.com", "Online payments; country eligibility varies.", "global"], ["Wise", "Money services", "wise.com", "International transfers in supported countries.", "global"], ["Western Union", "Money services", "westernunion.com", "Money transfer information and locations.", "global"], ["MoneyGram", "Money services", "moneygram.com", "Money transfers where supported.", "global"], ["Visa", "Money services", "visa.com", "Payment network and card information.", "global"], ["Mastercard", "Money services", "mastercard.com", "Payment network and card information.", "global"], ["LinkedIn", "Jobs & learning", "linkedin.com", "Jobs and professional networking.", "global"], ["Coursera", "Jobs & learning", "coursera.org", "Online courses; some content costs money.", "global"], ["Khan Academy", "Jobs & learning", "khanacademy.org", "Free lessons and learning practice.", "global"]];
+const localItems={"SO": [["Hormuud", "Telecom & mobile money", "hormuud.com", "Telecommunications and EVC Plus information."], ["Telesom", "Telecom & mobile money", "telesom.com", "Telecom and ZAAD service information."], ["Dahabshiil", "Money services", "dahabshiil.com", "Remittance and financial services; verify local availability."], ["Premier Bank", "Banks", "premierbank.so", "Bank information and services."], ["Somtel", "Telecom & mobile money", "somtelnetwork.net", "Telecommunications and mobile services."]], "US": [["Chase", "Banks", "chase.com", "Banking services in the United States."], ["Bank of America", "Banks", "bankofamerica.com", "Banking services in the United States."], ["Wells Fargo", "Banks", "wellsfargo.com", "Banking services in the United States."], ["DoorDash", "Food delivery", "doordash.com", "Food delivery in supported areas."], ["Grubhub", "Food delivery", "grubhub.com", "Food delivery in supported areas."]], "GB": [["Barclays", "Banks", "barclays.co.uk", "UK banking services."], ["HSBC UK", "Banks", "hsbc.co.uk", "UK banking services."], ["Monzo", "Banks", "monzo.com", "Digital banking in supported markets."], ["Deliveroo", "Food delivery", "deliveroo.co.uk", "Food delivery in supported areas."]], "KE": [["M-PESA", "Mobile money", "safaricom.co.ke", "Mobile money and Safaricom services."], ["Equity Bank", "Banks", "equitybankgroup.com", "Banking services and local information."], ["KCB Bank", "Banks", "ke.kcbgroup.com", "Banking services in Kenya."], ["Glovo", "Food delivery", "glovoapp.com", "Delivery where available."]], "IN": [["UPI", "Payments", "npci.org.in", "Official UPI payment system information."], ["State Bank of India", "Banks", "sbi.co.in", "Banking services in India."], ["HDFC Bank", "Banks", "hdfcbank.com", "Banking services in India."], ["Zomato", "Food delivery", "zomato.com", "Restaurant discovery and food delivery where available."], ["Swiggy", "Food delivery", "swiggy.com", "Food delivery in supported areas."]], "AE": [["Emirates NBD", "Banks", "emiratesnbd.com", "Banking services in the UAE."], ["Careem", "Transport & delivery", "careem.com", "Rides and services in supported cities."], ["Talabat", "Food delivery", "talabat.com", "Food delivery where available."]], "CA": [["RBC", "Banks", "rbc.com", "Canadian banking information."], ["TD Canada Trust", "Banks", "td.com", "Banking services in Canada."], ["Skip", "Food delivery", "skipthedishes.com", "Food delivery in supported areas."]], "AU": [["Commonwealth Bank", "Banks", "commbank.com.au", "Australian banking services."], ["ANZ", "Banks", "anz.com.au", "Banking services in Australia."], ["Menulog", "Food delivery", "menulog.com.au", "Food delivery in supported areas."]], "NG": [["OPay", "Payments", "opayweb.com", "Digital payment services; check current eligibility."], ["GTBank", "Banks", "gtbank.com", "Banking services in supported markets."], ["Jumia", "Shopping", "jumia.com.ng", "Online shopping in Nigeria."]], "ZA": [["FNB", "Banks", "fnb.co.za", "Banking services in South Africa."], ["Takealot", "Shopping", "takealot.com", "Online shopping in South Africa."], ["Mr D", "Food delivery", "mrdfood.com", "Food delivery in supported areas."]], "PK": [["JazzCash", "Payments", "jazzcash.com.pk", "Digital payments and wallet information."], ["Easypaisa", "Payments", "easypaisa.com.pk", "Digital financial services in Pakistan."], ["Daraz", "Shopping", "daraz.pk", "Online shopping in Pakistan."]], "BD": [["bKash", "Payments", "bkash.com", "Mobile financial services in Bangladesh."], ["BRAC Bank", "Banks", "bracbank.com", "Banking services in Bangladesh."], ["Daraz", "Shopping", "daraz.com.bd", "Online shopping in Bangladesh."]], "BR": [["Pix / Banco Central", "Payments", "bcb.gov.br", "Official information about Brazil's Pix payments."], ["iFood", "Food delivery", "ifood.com.br", "Food delivery in supported areas."], ["Mercado Livre", "Shopping", "mercadolivre.com.br", "Online marketplace in Brazil."]], "FR": [["BNP Paribas", "Banks", "mabanque.bnpparibas", "Banking services in France."], ["Carrefour", "Shopping", "carrefour.fr", "Retail and shopping in France."], ["Uber Eats", "Food delivery", "ubereats.com", "Food delivery in supported areas."]], "DE": [["Deutsche Bank", "Banks", "db.com", "Banking information."], ["Lieferando", "Food delivery", "lieferando.de", "Food delivery in supported areas."], ["Kleinanzeigen", "Shopping", "kleinanzeigen.de", "Local marketplace in Germany."]], "JP": [["PayPay", "Payments", "paypay.ne.jp", "Payment service information in Japan."], ["Rakuten", "Shopping", "rakuten.co.jp", "Shopping and services in Japan."], ["Japan Post Bank", "Banks", "jp-bank.japanpost.jp", "Banking information in Japan."]], "TR": [["İşbank", "Banks", "isbank.com.tr", "Banking services in Türkiye."], ["Trendyol", "Shopping", "trendyol.com", "Shopping and delivery where available."], ["Yemeksepeti", "Food delivery", "yemeksepeti.com", "Food delivery in supported areas."]], "EG": [["CIB", "Banks", "cibeg.com", "Banking services in Egypt."], ["Fawry", "Payments", "fawry.com", "Payments and financial services in Egypt."], ["talabat", "Food delivery", "talabat.com", "Food delivery in supported areas."]]};
+const countryNames={"AF": "Afghanistan", "AL": "Albania", "DZ": "Algeria", "AD": "Andorra", "AO": "Angola", "AG": "Antigua and Barbuda", "AR": "Argentina", "AM": "Armenia", "AU": "Australia", "AT": "Austria", "AZ": "Azerbaijan", "BS": "Bahamas", "BH": "Bahrain", "BD": "Bangladesh", "BB": "Barbados", "BY": "Belarus", "BE": "Belgium", "BZ": "Belize", "BJ": "Benin", "BT": "Bhutan", "BO": "Bolivia", "BA": "Bosnia and Herzegovina", "BW": "Botswana", "BR": "Brazil", "BN": "Brunei", "BG": "Bulgaria", "BF": "Burkina Faso", "BI": "Burundi", "CV": "Cabo Verde", "KH": "Cambodia", "CM": "Cameroon", "CA": "Canada", "CF": "Central African Republic", "TD": "Chad", "CL": "Chile", "CN": "China", "CO": "Colombia", "KM": "Comoros", "CG": "Congo", "CR": "Costa Rica", "CI": "Côte d’Ivoire", "HR": "Croatia", "CU": "Cuba", "CY": "Cyprus", "CZ": "Czechia", "DK": "Denmark", "DJ": "Djibouti", "DM": "Dominica", "DO": "Dominican Republic", "CD": "DR Congo", "EC": "Ecuador", "EG": "Egypt", "SV": "El Salvador", "GQ": "Equatorial Guinea", "ER": "Eritrea", "EE": "Estonia", "SZ": "Eswatini", "ET": "Ethiopia", "FJ": "Fiji", "FI": "Finland", "FR": "France", "GA": "Gabon", "GM": "Gambia", "GE": "Georgia", "DE": "Germany", "GH": "Ghana", "GR": "Greece", "GD": "Grenada", "GT": "Guatemala", "GN": "Guinea", "GW": "Guinea-Bissau", "GY": "Guyana", "HT": "Haiti", "HN": "Honduras", "HU": "Hungary", "IS": "Iceland", "IN": "India", "ID": "Indonesia", "IR": "Iran", "IQ": "Iraq", "IE": "Ireland", "IL": "Israel", "IT": "Italy", "JM": "Jamaica", "JP": "Japan", "JO": "Jordan", "KZ": "Kazakhstan", "KE": "Kenya", "KI": "Kiribati", "KW": "Kuwait", "KG": "Kyrgyzstan", "LA": "Laos", "LV": "Latvia", "LB": "Lebanon", "LS": "Lesotho", "LR": "Liberia", "LY": "Libya", "LI": "Liechtenstein", "LT": "Lithuania", "LU": "Luxembourg", "MG": "Madagascar", "MW": "Malawi", "MY": "Malaysia", "MV": "Maldives", "ML": "Mali", "MT": "Malta", "MH": "Marshall Islands", "MR": "Mauritania", "MU": "Mauritius", "MX": "Mexico", "FM": "Micronesia", "MD": "Moldova", "MC": "Monaco", "MN": "Mongolia", "ME": "Montenegro", "MA": "Morocco", "MZ": "Mozambique", "MM": "Myanmar", "NA": "Namibia", "NR": "Nauru", "NP": "Nepal", "NL": "Netherlands", "NZ": "New Zealand", "NI": "Nicaragua", "NE": "Niger", "NG": "Nigeria", "KP": "North Korea", "MK": "North Macedonia", "NO": "Norway", "OM": "Oman", "PK": "Pakistan", "PW": "Palau", "PS": "Palestine", "PA": "Panama", "PG": "Papua New Guinea", "PY": "Paraguay", "PE": "Peru", "PH": "Philippines", "PL": "Poland", "PT": "Portugal", "QA": "Qatar", "RO": "Romania", "RU": "Russia", "RW": "Rwanda", "KN": "Saint Kitts and Nevis", "LC": "Saint Lucia", "VC": "Saint Vincent and the Grenadines", "WS": "Samoa", "SM": "San Marino", "ST": "Sao Tome and Principe", "SA": "Saudi Arabia", "SN": "Senegal", "RS": "Serbia", "SC": "Seychelles", "SL": "Sierra Leone", "SG": "Singapore", "SK": "Slovakia", "SI": "Slovenia", "SB": "Solomon Islands", "SO": "Somalia", "ZA": "South Africa", "KR": "South Korea", "SS": "South Sudan", "ES": "Spain", "LK": "Sri Lanka", "SD": "Sudan", "SR": "Suriname", "SE": "Sweden", "CH": "Switzerland", "SY": "Syria", "TJ": "Tajikistan", "TZ": "Tanzania", "TH": "Thailand", "TL": "Timor-Leste", "TG": "Togo", "TO": "Tonga", "TT": "Trinidad and Tobago", "TN": "Tunisia", "TR": "Türkiye", "TM": "Turkmenistan", "TV": "Tuvalu", "UG": "Uganda", "UA": "Ukraine", "AE": "United Arab Emirates", "GB": "United Kingdom", "US": "United States", "UY": "Uruguay", "UZ": "Uzbekistan", "VU": "Vanuatu", "VA": "Vatican City", "VE": "Venezuela", "VN": "Vietnam", "YE": "Yemen", "ZM": "Zambia", "ZW": "Zimbabwe"};
+const categoriesList=["All","Banks","Money services","Payments","Restaurants","Food delivery","Shopping","Travel","Telecom & mobile money","Video & social","Search & learning","Learning","Productivity","Create","Entertainment","Jobs & learning"];
+let active="All";
+const directory=document.getElementById('directory'),search=document.getElementById('search'),country=document.getElementById('country');
+function getItems(){const code=country.value;let local=(localItems[code]||[]).map(x=>({n:x[0],c:x[1],domain:x[2],d:x[3],scope:'local'}));let globals=globalItems.map(x=>({n:x[0],c:x[1],domain:x[2],d:x[3],scope:'global'}));return [...local,...globals]}
+function renderCats(){const nav=document.getElementById('categories');nav.innerHTML='';categoriesList.forEach(c=>{const b=document.createElement('button');b.className='chip'+(active===c?' active':'');b.textContent=c;b.onclick=()=>{active=c;renderCats();renderItems()};nav.appendChild(b)})}
+function flagEmoji(code){if(!code)return '🌍';return String.fromCodePoint(...[...code].map(c=>127397+c.charCodeAt(0)))}
+function renderItems(){const code=country.value;document.getElementById('flag').textContent=flagEmoji(code);document.getElementById('directoryTitle').textContent=code?'Popular services in '+countryNames[code]:'Popular worldwide';const q=search.value.trim().toLowerCase();const found=getItems().filter(x=>(active==='All'||x.c===active)&&[x.n,x.c,x.d,x.domain].join(' ').toLowerCase().includes(q));directory.innerHTML='';found.forEach(x=>{const a=document.createElement('article');a.className='card';const top=document.createElement('div');top.className='cardtop';const img=document.createElement('img');img.className='brandimg';img.alt=x.n+' logo';img.loading='lazy';img.src='https://www.google.com/s2/favicons?domain='+encodeURIComponent(x.domain)+'&sz=128';img.onerror=()=>{const f=document.createElement('div');f.className='brandfallback';f.textContent='🌐';img.replaceWith(f)};const info=document.createElement('div');const h=document.createElement('h3');h.textContent=x.n;const tag=document.createElement('span');tag.className='tag';tag.textContent=x.c+(x.scope==='local'?' · Country listing':'');info.append(h,tag);top.append(img,info);const p=document.createElement('p');p.textContent=x.d;const link=document.createElement('a');link.href='https://'+x.domain;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Official website ↗';a.append(top,p,link);directory.append(a)});document.getElementById('count').textContent=found.length+' services';document.getElementById('empty').style.display=found.length?'none':'block'}
+country.addEventListener('change',()=>{active='All';renderCats();renderItems()});search.addEventListener('input',renderItems);document.getElementById('year').textContent=new Date().getFullYear();
+function calculate(){const s=document.getElementById('calcInput').value.trim(),out=document.getElementById('calcResult');if(!s){out.textContent='Enter a calculation.';return}if(!/^[0-9+\-*/().%\s]+$/.test(s)){out.textContent='Use numbers and arithmetic symbols only.';return}try{const v=Function('"use strict";return ('+s+')')();out.textContent=Number.isFinite(v)?'Answer: '+v:'Check your expression.'}catch(e){out.textContent='Check your expression.'}}
+function makeQR(){const v=document.getElementById('qrInput').value.trim(),out=document.getElementById('qrResult');out.innerHTML='';if(!v){out.textContent='Enter text or a link first.';return}const im=document.createElement('img');im.alt='Generated QR code';im.width=180;im.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(v);im.style.cssText='display:block;background:white;padding:6px;border-radius:8px;margin-top:8px';im.onerror=()=>out.textContent='QR service unavailable. Check internet.';out.append(im)}
+function countWords(){const s=document.getElementById('wordInput').value;document.getElementById('wordResult').textContent='Words: '+(s.trim()?s.trim().split(/\s+/).length:0)+' · Characters: '+s.length}
+function convertUnit(){const raw=document.getElementById('unitInput').value,n=Number(raw),t=document.getElementById('unitType').value,out=document.getElementById('unitResult');if(raw===''||!Number.isFinite(n)){out.textContent='Enter a valid number.';return}out.textContent=t==='km-mi'?n+' km = '+(n*.621371).toFixed(3)+' miles':n+' miles = '+(n/.621371).toFixed(3)+' km'}
+
+// Supabase Auth: public browser configuration only. Never put a service_role/secret key here.
+const SUPABASE_URL='https://datxluvurxqlwujmvqgf.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable__tZbhgg34IJxFM8rKPK01A_CwMdCm6R';
+const loginModal=document.getElementById('loginModal');
+const statusText=document.getElementById('accountStatus');
+const userPill=document.getElementById('userPill');
+const loginMessage=document.getElementById('loginMessage');
+const displayNameInput=document.getElementById('displayName');
+const emailInput=document.getElementById('accountEmail');
+const passInput=document.getElementById('accountPass');
+const saveAccountBtn=document.getElementById('saveAccount');
+const loginAccountBtn=document.getElementById('loginAccount');
+let currentAuthUser=null;
+let supabaseClient=null;
+try {
+  if (window.supabase && typeof window.supabase.createClient==='function') {
+    supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+  }
+} catch (e) { console.error('Supabase initialization failed',e); }
+function readLocation(){try{return localStorage.getItem('everydaykit_location')||''}catch(e){return ''}}
+function paintProfile(user){
+  currentAuthUser=user||null;
+  if(currentAuthUser){
+    const name=currentAuthUser.user_metadata?.display_name || currentAuthUser.user_metadata?.name || (currentAuthUser.email||'User').split('@')[0];
+    userPill.style.display='inline-flex'; userPill.textContent='👤 '+name;
+    document.getElementById('openLogin').hidden=true;
+    statusText.textContent='Connected: '+(currentAuthUser.email||name)+'. '+(readLocation()?'Location saved on this device.':'Location has not been shared.');
+    userPill.textContent='✉ '+(currentAuthUser.email||name);userPill.title='Signed in as '+(currentAuthUser.email||name);
+    document.getElementById('logoutBtn').style.display='block';
+    if(document.getElementById('googleAccount'))document.getElementById('googleAccount').style.display='none';
+    displayNameInput.value=name; emailInput.value=currentAuthUser.email||'';
+    saveAccountBtn.style.display='none'; loginAccountBtn.style.display='none';
+    passInput.value=''; passInput.style.display='none';
+  } else {
+    userPill.style.display='none';
+    document.getElementById('openLogin').hidden=false;document.getElementById('openLogin').textContent='Log in / Create account';
+    statusText.textContent='You can browse without an account. Sign up or log in to use your online account.'+(readLocation()?' Location is saved on this device.':'');
+    document.getElementById('logoutBtn').style.display='none';
+    if(document.getElementById('googleAccount'))document.getElementById('googleAccount').style.display='block';
+    saveAccountBtn.style.display='block'; loginAccountBtn.style.display='block';
+    passInput.style.display='block';
+  }
+}
+function showAuthMessage(message,isError=false){loginMessage.textContent=message;loginMessage.style.color=isError?'#ffb4b4':'var(--accent)';}
+userPill.style.cursor='pointer';userPill.setAttribute('role','button');userPill.setAttribute('tabindex','0');
+userPill.addEventListener('click',()=>{if(currentAuthUser)document.getElementById('openLogin').click();});
+userPill.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&currentAuthUser){e.preventDefault();document.getElementById('openLogin').click();}});
+document.getElementById('openLogin').onclick=()=>{
+  loginModal.classList.add('open'); loginMessage.textContent='';
+  if(currentAuthUser){displayNameInput.value=currentAuthUser.user_metadata?.display_name||currentAuthUser.email?.split('@')[0]||'';emailInput.value=currentAuthUser.email||'';}
+};
+document.getElementById('closeLogin').onclick=()=>loginModal.classList.remove('open');
+loginModal.addEventListener('click',e=>{if(e.target===loginModal)loginModal.classList.remove('open')});
+async function signUp(){
+  const name=displayNameInput.value.trim(), email=emailInput.value.trim().toLowerCase(), password=passInput.value;
+  if(!supabaseClient){showAuthMessage('Could not load the login service. Check your internet and refresh.',true);return;}
+  if(!name){showAuthMessage('Enter a display name for your new account.',true);return;}
+  if(!email){showAuthMessage('Enter your email address.',true);return;}
+  if(password.length<6){showAuthMessage('Use a password with at least 6 characters.',true);return;}
+  saveAccountBtn.disabled=true;loginAccountBtn.disabled=true;showAuthMessage('Creating your account…');
+  try{
+    const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{display_name:name}}});
+    if(error)throw error;
+    passInput.value='';
+    if(data.session){paintProfile(data.user);loginModal.classList.remove('open');showAuthMessage('Account created and you are signed in.');}
+    else{showAuthMessage('Account created for '+email+'. Check your inbox for the confirmation link. Supabase email confirmation is enabled, so the account connects after you verify it.');emailInput.value=email;}
+  }catch(e){showAuthMessage(e.message||'Could not create the account. Please try again.',true);}
+  finally{saveAccountBtn.disabled=false;loginAccountBtn.disabled=false;}
+}
+async function signIn(){
+  const email=emailInput.value.trim().toLowerCase(), password=passInput.value;
+  if(!supabaseClient){showAuthMessage('Could not load the login service. Check your internet and refresh.',true);return;}
+  if(!email||!password){showAuthMessage('Enter your email and password.',true);return;}
+  saveAccountBtn.disabled=true;loginAccountBtn.disabled=true;showAuthMessage('Logging in…');
+  try{
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    passInput.value='';paintProfile(data.user);loginModal.classList.remove('open');showAuthMessage('You are now logged in.');
+  }catch(e){showAuthMessage(e.message||'Could not log in. Check your details and try again.',true);}
+  finally{saveAccountBtn.disabled=false;loginAccountBtn.disabled=false;}
+}
+document.getElementById('forgotPassword').onclick=async()=>{const email=emailInput.value.trim().toLowerCase();if(!supabaseClient){showAuthMessage('Login service is unavailable. Check your internet.',true);return;}if(!email){showAuthMessage('Enter your email first, then tap Forgot password?',true);return;}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;showAuthMessage('If this email has an account, a password reset link will be sent. Check your inbox and spam folder.');}catch(e){showAuthMessage(e.message||'Could not send reset email.',true)}};
+saveAccountBtn.onclick=signUp;
+loginAccountBtn.onclick=signIn;
+document.getElementById('logoutBtn').onclick=async()=>{
+  if(!supabaseClient){showAuthMessage('Login service is unavailable.',true);return;}
+  const {error}=await supabaseClient.auth.signOut();
+  if(error){showAuthMessage(error.message,true);return;}
+  passInput.value='';paintProfile(null);showAuthMessage('You have logged out.');
+};
+if(supabaseClient){
+  supabaseClient.auth.getSession().then(({data,error})=>{if(error){statusText.textContent='Could not check your account session. You can still browse.';return;}paintProfile(data.session?.user||null);});
+  supabaseClient.auth.onAuthStateChange((_event,session)=>paintProfile(session?.user||null));
+}else{
+  statusText.textContent='Login service did not load. You can still browse; refresh when you have internet.';
+}
+// A connected account should visibly show the exact email chosen by the user.
+function showConnectedEmail(user){
+  if(!user)return;
+  const email=user.email||'';
+  const name=user.user_metadata?.display_name||user.user_metadata?.name||email.split('@')[0]||'User';
+  userPill.textContent='✉ '+email;
+  userPill.title='Signed in as '+email;
+  userPill.setAttribute('aria-label','Signed in as '+email);
+  statusText.textContent='Connected: '+email+'. '+(readLocation()?'Location saved on this device.':'Location has not been shared.');
+}
+const googleBtn=document.getElementById('googleAccount');
+if(googleBtn)googleBtn.onclick=async()=>{
+  if(!supabaseClient){showAuthMessage('Login service could not load. Refresh and try again.',true);return;}
+  googleBtn.disabled=true;showAuthMessage('Opening Google account chooser…');
+  try{
+    const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.href}});
+    if(error)throw error;
+  }catch(e){showAuthMessage((e.message||'Google sign-in failed.')+' If Google sign-in is not enabled, enable the Google provider in Supabase Authentication settings.',true);googleBtn.disabled=false;}
+};
+const settingsModal=document.getElementById('appSettings');
+function closeSettings(){settingsModal.classList.remove('open');}
+document.getElementById('openSettingsBtn').onclick=()=>{
+  settingsModal.classList.add('open');
+  const installed=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;
+  document.getElementById('installSettingStatus').textContent=installed?'Installed on this device':'Not installed yet';
+  document.getElementById('settingsInstallBtn').hidden=installed;
+};
+document.getElementById('closeSettingsBtn').onclick=closeSettings;
+document.getElementById('settingsDoneBtn').onclick=closeSettings;
+settingsModal.addEventListener('click',e=>{if(e.target===settingsModal)closeSettings()});
+document.getElementById('settingsInstallBtn').onclick=()=>document.getElementById('installAppBtn').click();
+document.getElementById('locateBtn').onclick=()=>{
+  if(!navigator.geolocation){statusText.textContent='Location is not supported by this browser.';return;}
+  statusText.textContent='Requesting location permission…';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const loc=pos.coords.latitude.toFixed(3)+', '+pos.coords.longitude.toFixed(3);
+    try{localStorage.setItem('everydaykit_location',loc);}catch(e){}
+    statusText.textContent='Location permission granted. Approximate coordinates: '+loc+' (saved on this device).';
+    if(currentAuthUser)statusText.textContent='Signed in as '+(currentAuthUser.email||'user')+'. Location saved on this device.';
+  },err=>{statusText.textContent=err.code===1?'Location permission denied. You can still choose a country manually.':'Could not get location. Try again or choose a country manually.';},{enableHighAccuracy:false,timeout:10000,maximumAge:300000});
+};
+
+
+renderCats();renderItems();
+</script>
+<!-- EverydayKit AI assistant: secure Supabase Edge Function backend -->
+<button class="ek-ai-launch" id="ekAiLaunch" type="button" aria-label="Open EverydayKit AI helper" aria-expanded="false"><span class="ek-ai-spark">✦</span><span>Ask EverydayKit</span></button>
+<section class="ek-ai-panel" id="ekAiPanel" role="dialog" aria-label="EverydayKit assistant" aria-modal="false">
+  <header class="ek-ai-head">
+    <div class="ek-ai-avatar">✦</div>
+    <div class="ek-ai-headtext"><strong>EverydayKit AI</strong><small>AI assistant · secure connection</small></div>
+    <button class="ek-ai-close" id="ekAiClose" type="button" aria-label="Close assistant">×</button>
+  </header>
+  <div class="ek-ai-messages" id="ekAiMessages" aria-live="polite">
+    <div class="ek-ai-msg">Hi! I can explain EverydayKit and help you find a tool. What do you need today?</div>
+  </div>
+  <div class="ek-ai-suggestions">
+    <button type="button" data-ekai="What can this website do?">What can it do?</button>
+    <button type="button" data-ekai="Help me find a service in my country">Find a service</button>
+    <button type="button" data-ekai="How do I use the free tools?">Free tools</button>
+  </div>
+  <form class="ek-ai-form" id="ekAiForm">
+    <input class="ek-ai-input" id="ekAiInput" maxlength="500" autocomplete="off" placeholder="Describe what you need…" aria-label="Describe what you need" required>
+    <button class="ek-ai-send" type="submit">Send</button>
+  </form>
+  <div class="ek-ai-note" id="ekAiNote">AI answers require a signed-in EverydayKit account and a configured secure backend. Do not send passwords or sensitive personal information.</div>
+</section>
+<script>
+(function(){
+  const launch=document.getElementById('ekAiLaunch');
+  const panel=document.getElementById('ekAiPanel');
+  const close=document.getElementById('ekAiClose');
+  const form=document.getElementById('ekAiForm');
+  const input=document.getElementById('ekAiInput');
+  const messages=document.getElementById('ekAiMessages');
+  const sendButton=form?.querySelector('button[type="submit"]');
+  const note=document.getElementById('ekAiNote');
+  if(!launch||!panel||!form||!input||!messages||!sendButton)return;
+  const history=[];
+  function toggle(open){panel.classList.toggle('open',open);launch.setAttribute('aria-expanded',String(open));if(open)input.focus();}
+  launch.addEventListener('click',()=>toggle(!panel.classList.contains('open')));
+  close?.addEventListener('click',()=>toggle(false));
+  function addMessage(text,kind){const el=document.createElement('div');el.className='ek-ai-msg'+(kind?' '+kind:'');el.textContent=text;messages.appendChild(el);messages.scrollTop=messages.scrollHeight;return el;}
+  function setBusy(busy){sendButton.disabled=busy;input.disabled=busy;sendButton.textContent=busy?'Thinking…':'Send';}
+  function signInPrompt(){const msg=addMessage('Please sign in to EverydayKit first. The secure AI service only accepts authenticated requests.','');const sign=document.createElement('button');sign.type='button';sign.className='ek-ai-suggestions';sign.textContent='Sign in';sign.style.alignSelf='flex-start';sign.addEventListener('click',()=>{const b=document.getElementById('openLogin');if(b)b.click();else addMessage('Open the Account or Sign in option from the main website, then try again.','');});messages.appendChild(sign);messages.scrollTop=messages.scrollHeight;}
+  async function send(text){
+    const q=(text||'').trim();if(!q||sendButton.disabled)return;
+    addMessage(q,'user');input.value='';setBusy(true);
+    const typing=addMessage('Thinking…','');
+    try{
+      if(!window.supabase || typeof supabaseClient==='undefined' || !supabaseClient){throw new Error('The secure account service is not ready. Refresh the page and try again.');}
+      const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
+      if(sessionError)throw sessionError;
+      if(!sessionData?.session?.access_token){typing.remove();signInPrompt();return;}
+      const {data,error}=await supabaseClient.functions.invoke('everydaykit-ai',{body:{message:q,history:history.slice(-10)}});
+      if(error){let detail=error.message||'AI request failed.';try{const ctx=error.context;if(ctx&&typeof ctx.json==='function'){const body=await ctx.json();if(body?.error)detail=body.error;}}catch(_){}throw new Error(detail+' Check that the EverydayKit AI Edge Function is deployed and its secret is set.');}
+      const reply=String(data?.reply||'I could not create a reply. Please try again.').trim();
+      typing.remove();addMessage(reply,'');history.push({role:'user',content:q},{role:'assistant',content:reply});
+      if(history.length>20)history.splice(0,history.length-20);
+      if(note)note.textContent='AI-powered replies · avoid sharing passwords, payment details, or sensitive personal information.';
+    }catch(err){typing.remove();addMessage('I could not connect to the AI service. '+(err?.message||'Please try again later.'),'');}
+    finally{setBusy(false);input.focus();}
+  }
+  form.addEventListener('submit',e=>{e.preventDefault();send(input.value);});
+  panel.querySelectorAll('[data-ekai]').forEach(b=>b.addEventListener('click',()=>send(b.getAttribute('data-ekai'))));
+})();
+</script>
+
+
+<script>
+/* Added: soft click sound for controls; no audio file or external library needed. */
+(function () {
+  let ctx;
+  function playClick() {
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === 'suspended') ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const now = ctx.currentTime;
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(620, now);
+      osc.frequency.exponentialRampToValueAtTime(430, now + 0.045);
+      gain.gain.setValueAtTime(0.045, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.055);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.06);
+    } catch (_) { /* Sound may be unavailable in some browsers. */ }
+  }
+  document.addEventListener('click', function (event) {
+    if (event.target.closest('button, a, select, input[type="checkbox"], input[type="radio"]')) playClick();
+  }, true);
+})();
+</script>
+
+
+<script>
+// Device-local appearance preferences.
+(function(){
+ const defaults={theme:'dark',accent:'green',textSize:'normal',compact:false,reduceMotion:false};
+ const $=id=>document.getElementById(id);let prefs={...defaults};
+ try{prefs={...defaults,...JSON.parse(localStorage.getItem('everydaykit-preferences')||'{}')}}catch(e){}
+ const accents={green:'#16834c',blue:'#2878d4',purple:'#805ad5',orange:'#d97706'};
+ function apply(){const theme=prefs.theme==='system'?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):prefs.theme;document.body.dataset.theme=theme;document.body.dataset.textSize=prefs.textSize;document.body.dataset.compact=String(!!prefs.compact);document.body.dataset.reduceMotion=String(!!prefs.reduceMotion);document.documentElement.style.setProperty('--accent',accents[prefs.accent]||accents.green);const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=theme==='light'?'#f4f8f5':'#0d7a4a';
+  if($('themeSetting'))$('themeSetting').value=prefs.theme;const toggle=$('themeToggleBtn');if(toggle){const isDark=theme==='dark';toggle.innerHTML=isDark?'☀ <span class="theme-label">Light</span>':'☾ <span class="theme-label">Dark</span>';toggle.setAttribute('aria-label',isDark?'Switch to light mode':'Switch to dark mode');toggle.title=isDark?'Switch to light mode':'Switch to dark mode';}if($('accentSetting'))$('accentSetting').value=prefs.accent;if($('textSizeSetting'))$('textSizeSetting').value=prefs.textSize;if($('compactSetting'))$('compactSetting').checked=!!prefs.compact;if($('motionSetting'))$('motionSetting').checked=!!prefs.reduceMotion;}
+ function save(){try{localStorage.setItem('everydaykit-preferences',JSON.stringify(prefs))}catch(e){}apply()}
+ apply();if(window.matchMedia){window.matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',()=>{if(prefs.theme==='system')apply()})}
+ $('themeSetting')?.addEventListener('change',e=>{prefs.theme=e.target.value;save()});$('themeToggleBtn')?.addEventListener('click',()=>{const current=document.body.dataset.theme||'dark';prefs.theme=current==='dark'?'light':'dark';save()});$('accentSetting')?.addEventListener('change',e=>{prefs.accent=e.target.value;save()});$('textSizeSetting')?.addEventListener('change',e=>{prefs.textSize=e.target.value;save()});$('compactSetting')?.addEventListener('change',e=>{prefs.compact=e.target.checked;save()});$('motionSetting')?.addEventListener('change',e=>{prefs.reduceMotion=e.target.checked;save()});$('resetSettingsBtn')?.addEventListener('click',()=>{prefs={...defaults};save()});
+})();
+</script>
+<script>
+// EverydayKit PWA installation and offline app-shell caching.
+(function(){
+  let installPrompt = null;
+  const installBtn = document.getElementById('installAppBtn');
+  const installHelp = document.getElementById('installHelp');
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    installPrompt = event;
+    showInstallControl();
+    if (installBtn) { installBtn.textContent = '⬇ Install'; installBtn.setAttribute('aria-label','Install EverydayKit'); }
+  });
+  function hideInstallControl(){
+    if (installBtn) installBtn.hidden = true;
+    const settingsInstallBtn=document.getElementById('settingsInstallBtn'); if(settingsInstallBtn) settingsInstallBtn.hidden=true;
+    const installSettingStatus=document.getElementById('installSettingStatus'); if(installSettingStatus) installSettingStatus.textContent='Installed on this device';
+    if (installHelp) installHelp.textContent = '';
+  }
+  function showInstallControl(){
+    if (installBtn) installBtn.hidden = false;
+    const settingsInstallBtn=document.getElementById('settingsInstallBtn'); if(settingsInstallBtn) settingsInstallBtn.hidden=false;
+  }
+  // Installed PWAs run in standalone display mode: do not show the install button there.
+  if (window.matchMedia && (window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches) || window.navigator.standalone === true) {
+    hideInstallControl();
+  }
+  window.addEventListener('appinstalled', () => {
+    installPrompt = null;
+    hideInstallControl();
+  });
+  if (installBtn) installBtn.addEventListener('click', async () => {
+    if (installPrompt) {
+      installPrompt.prompt();
+      const choice = await installPrompt.userChoice;
+      installHelp.textContent = choice.outcome === 'accepted' ? 'Installation started.' : 'Installation was cancelled. You can try again anytime.';
+      if(choice.outcome==='accepted')hideInstallControl();
+      installPrompt = null;
+      return;
+    }
+    installHelp.textContent = 'In Chrome, open the menu (⋮) and choose “Install app” or “Add to Home screen”.';
+  });
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => console.warn('EverydayKit offline support could not start:', err));
+    });
+  }
+})();
+</script>
+
+<script>
+// Full-screen launch animation; reveal the app after the short intro.
+(function(){
+  const splash = document.getElementById('ekSplash');
+  if (!splash) return;
+  const hideSplash = () => window.setTimeout(() => splash.classList.add('ekSplashDone'), 1350);
+  if (document.readyState === 'complete') hideSplash();
+  else window.addEventListener('load', hideSplash, { once: true });
+  // Safety fallback for slow connections.
+  window.setTimeout(() => splash.classList.add('ekSplashDone'), 3200);
+})();
+</script>
+
+
+
+
+<div id="ekCallScreen" class="ek-call-screen" hidden role="dialog" aria-modal="true" aria-labelledby="ekCallTitle"><h3 id="ekCallTitle">EverydayKit call</h3><p id="ekCallMessage">Connecting…</p><div class="ek-call-videos"><video id="ekRemoteVideo" autoplay playsinline></video><video id="ekLocalVideo" autoplay muted playsinline></video></div><div class="ek-call-buttons"><button id="ekAcceptCall" class="ek-call-accept" type="button" hidden>Accept call</button><button id="ekDeclineCall" class="ek-call-decline" type="button" hidden>Decline</button><button id="ekHangupCall" class="ek-call-decline" type="button">End call</button></div></div>
+
+<script>
+// EverydayKit voice alerts + browser notifications. Spoken alerts are opt-in.
+(function(){
+ const btn=document.getElementById('notificationPermissionBtn');
+ const consent=document.getElementById('ekVoiceConsent');
+ const enableBtn=document.getElementById('ekVoiceEnableBtn');
+ const laterBtn=document.getElementById('ekVoiceLaterBtn');
+ if(!btn)return;
+ const getVoicePref=()=>{try{return localStorage.getItem('ek-voice-alerts')||''}catch(e){return ''}};
+ const setVoicePref=value=>{try{localStorage.setItem('ek-voice-alerts',value)}catch(e){}}
+ let lastSpoken='';
+ function refresh(){const supported=('Notification' in window);btn.disabled=!supported;btn.classList.toggle('ek-notifications-on',supported&&Notification.permission==='granted');btn.title=!supported?'Browser notifications are not supported':Notification.permission==='granted'?'Browser notifications enabled; tap to test alerts':'Manage browser notifications and voice alerts';btn.setAttribute('aria-label',btn.title);}
+ function speakAlert(title,body){if(getVoicePref()!=='enabled'||!('speechSynthesis' in window))return;const text=[title,body].filter(Boolean).join('. ');if(!text||text===lastSpoken)return;lastSpoken=text;try{window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang=document.documentElement.lang||'en-US';utterance.rate=1;utterance.pitch=1;utterance.volume=.9;window.speechSynthesis.speak(utterance)}catch(e){console.warn('Voice alert unavailable:',e)}}
+ function requestBrowserNotifications(){if(!('Notification' in window))return Promise.resolve('unsupported');if(Notification.permission==='granted')return Promise.resolve('granted');if(Notification.permission==='denied')return Promise.resolve('denied');return Notification.requestPermission()}
+ window.ekNotifyEverydayKit=function(title,body){
+   const toast=document.createElement('div');toast.className='ek-notice-toast';toast.setAttribute('role','status');toast.textContent=title+(body?' — '+body:'');document.body.appendChild(toast);window.setTimeout(()=>toast.remove(),4200);
+   speakAlert(title,body);
+   if('Notification' in window&&Notification.permission==='granted'&&document.visibilityState==='hidden'){
+     try{const n=new Notification(title,{body:body||'You have a new update.',icon:'./icons/icon-192.png',badge:'./icons/icon-192.png',tag:'everydaykit-'+title.slice(0,40),renotify:false});n.onclick=()=>{window.focus();n.close();document.getElementById('openChatBtn')?.click()}}catch(e){console.warn('Browser notification could not be shown:',e)}
+   }
+ };
+ function showConsent(){if(consent&&getVoicePref()===''&&!sessionStorage.getItem('ek-voice-prompt-dismissed'))consent.hidden=false;}
+ async function enableVoice(){setVoicePref('enabled');if(consent)consent.hidden=true;try{if('speechSynthesis' in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('EverydayKit voice alerts are enabled.');u.lang=document.documentElement.lang||'en-US';window.speechSynthesis.speak(u)}}catch(e){}try{const permission=await requestBrowserNotifications();if(permission==='granted')window.ekNotifyEverydayKit('Alerts enabled','Voice alerts and browser notifications are ready.');else if(permission==='denied')window.ekNotifyEverydayKit('Voice alerts enabled','Browser notifications are blocked. You can allow them in Chrome site settings.');}catch(e){console.warn('Notification permission request failed:',e)}refresh();}
+ if(enableBtn)enableBtn.addEventListener('click',enableVoice);
+ if(laterBtn)laterBtn.addEventListener('click',()=>{if(consent)consent.hidden=true;setVoicePref('disabled');try{sessionStorage.setItem('ek-voice-prompt-dismissed','1')}catch(e){}});
+ btn.addEventListener('click',async()=>{
+   if(getVoicePref()==='') {showConsent();return}
+   if(getVoicePref()==='disabled'&&consent){consent.hidden=false;return}
+   if(getVoicePref()==='enabled'){
+     if(!('Notification' in window)){window.ekNotifyEverydayKit('Voice alerts enabled','This browser does not support system notifications.');return}
+     try{if(Notification.permission==='denied'){alert('Browser notifications are blocked. Open Chrome site settings to allow them.');return}const permission=await requestBrowserNotifications();if(permission==='granted')window.ekNotifyEverydayKit('Notifications enabled','Voice alerts are on. You can receive browser alerts while the app is in the background.');else window.ekNotifyEverydayKit('Voice alerts enabled','Browser notifications were not allowed.');}catch(e){alert('Could not enable notifications. Check Chrome site permissions.')}refresh();
+   }
+ });
+ refresh();document.addEventListener('visibilitychange',refresh);
+ window.addEventListener('load',()=>window.setTimeout(showConsent,1700));
+})();
+</script>
+<script>
+// EverydayKit Chat: personal IDs, private conversations and groups. Requires the included Supabase SQL setup.
+(function(){
+ const openBtn=document.getElementById('openChatBtn'),app=document.getElementById('chatApp'); if(!openBtn||!app)return;
+ const $=id=>document.getElementById(id);let peer=null,group=null,channel=null,lastIds=new Set(),chatMode='direct';let callChannel=null,pc=null,localStream=null,activeCallId=null,incomingOffer=null,callKind='audio',callSub=null,recorder=null,recordChunks=[],queuedIce=new Map();
+ const status=(msg,error=false)=>{$('chatStatus').textContent=msg;$('chatStatus').className='smalltext '+(error?'chat-status-error':'chat-status-ok')};
+ function showChat(){app.hidden=false;document.body.classList.add('ek-chat-page');document.body.style.overflow='hidden';if(!currentAuthUser){status('Please sign in first, then open Chat.',true);$('chatRoom').hidden=true;$('chatStart').hidden=false;}else{loadMyId();loadGroups();subscribeCalls();status('Share your ID with friends or enter a friend ID below.')}}
+ function closeChat(){app.hidden=true;document.body.classList.remove('ek-chat-page');document.body.style.overflow='';stopChannel()} function stopChannel(){if(channel&&supabaseClient){supabaseClient.removeChannel(channel);channel=null}}
+ openBtn.addEventListener('click',showChat);$('closeChatBtn').addEventListener('click',closeChat);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!app.hidden)closeChat()});
+ $('backChatBtn').addEventListener('click',()=>{$('chatRoom').hidden=true;$('chatStart').hidden=false;peer=null;group=null;lastIds.clear();stopChannel();loadGroups()});
+ $('copyMyChatId').addEventListener('click',async()=>{const val=$('myChatId').textContent;if(!val.startsWith('EK-'))return;try{await navigator.clipboard.writeText(val);status('Your ID was copied. Share it with friends.')}catch{status('Your ID is '+val)}});
+ async function loadMyId(){if(!supabaseClient||!currentAuthUser)return;try{const {data,error}=await supabaseClient.rpc('get_my_ek_chat_profile');if(error)throw error;const row=Array.isArray(data)?data[0]:data;if(row?.chat_id)$('myChatId').textContent=row.chat_id;else status('Could not load your ID. Run the latest chat SQL setup.',true)}catch(e){$('myChatId').textContent='Setup needed';status('Run the updated everydaykit-chat-setup.sql in Supabase first.',true)}}
+ async function findProfile(code){const {data,error}=await supabaseClient.rpc('find_ek_chat_profile_by_id',{p_chat_id:code.trim().toUpperCase()});if(error)throw error;return Array.isArray(data)?data[0]:data}
+ async function openPeer(){if(!supabaseClient||!currentAuthUser){status('Sign in first to use chat.',true);return}const code=$('chatFriendId').value.trim().toUpperCase();if(!/^EK-[A-F0-9]{8}$/.test(code)){status('Enter a valid EverydayKit ID like EK-A1B2C3D4.',true);return}const btn=$('findChatUser');btn.disabled=true;status('Finding friend…');try{const found=await findProfile(code);if(!found){status('No user found with that ID. Ask your friend to sign in once after setup.',true);return}if(found.id===currentAuthUser.id){status('That is your own ID. Enter a friend’s ID.',true);return}peer=found;group=null;chatMode='direct';$('addGroupMemberBtn').hidden=true;await openRoom(found.display_name||found.chat_id,'ek_chat_messages',[currentAuthUser.id,peer.id].sort().join('-'));}catch(e){status(e.message||'Could not find friend. Check the SQL setup.',true)}finally{btn.disabled=false}}
+ $('findChatUser').addEventListener('click',openPeer);$('chatFriendId').addEventListener('keydown',e=>{if(e.key==='Enter')openPeer()});
+ async function loadGroups(){if(!supabaseClient||!currentAuthUser)return;const list=$('chatGroupList');list.innerHTML='<p class="smalltext">Loading groups…</p>';try{const {data,error}=await supabaseClient.from('ek_chat_group_members').select('group_id, ek_chat_groups(id,name,created_at)').eq('user_id',currentAuthUser.id);if(error)throw error;list.innerHTML='';if(!data?.length){list.innerHTML='<p class="smalltext">No groups yet. Create one above.</p>';return}for(const row of data){const g=row.ek_chat_groups;if(!g)continue;const b=document.createElement('button');b.type='button';b.className='ek-group-item';const s=document.createElement('strong');s.textContent='👥 '+g.name;const small=document.createElement('small');small.textContent='Open →';b.append(s,small);b.addEventListener('click',()=>openGroup(g));list.append(b)}}catch(e){list.innerHTML='<p class="smalltext">Group setup needed. Run the latest SQL setup.</p>'}}
+ async function createGroup(){if(!currentAuthUser||!supabaseClient){status('Sign in first to create a group.',true);return}const name=$('newGroupName').value.trim();if(!name){status('Enter a group name.',true);return}const btn=$('createChatGroup');btn.disabled=true;status('Creating group…');try{const {data:g,error}=await supabaseClient.from('ek_chat_groups').insert({name:name.slice(0,60),created_by:currentAuthUser.id}).select('id,name').single();if(error)throw error;let ids=[currentAuthUser.id];const codes=$('newGroupMembers').value.split(/[\s,;]+/).map(s=>s.trim().toUpperCase()).filter(Boolean);for(const code of [...new Set(codes)]){const p=await findProfile(code);if(p&&p.id!==currentAuthUser.id)ids.push(p.id)}const {error:ownerErr}=await supabaseClient.from('ek_chat_group_members').insert({group_id:g.id,user_id:currentAuthUser.id,added_by:currentAuthUser.id});if(ownerErr)throw ownerErr;for(const user_id of [...new Set(ids)].filter(id=>id!==currentAuthUser.id)){const {error:memberErr}=await supabaseClient.from('ek_chat_group_members').insert({group_id:g.id,user_id,added_by:currentAuthUser.id});if(memberErr)throw memberErr;}$('newGroupName').value='';$('newGroupMembers').value='';await loadGroups();status('Group created. Share your group name and add members using their EverydayKit IDs.');await openGroup(g)}catch(e){status(e.message||'Could not create group. Check SQL setup.',true)}finally{btn.disabled=false}}
+ $('createChatGroup').addEventListener('click',createGroup);
+ async function openGroup(g){peer=null;group=g;chatMode='group';$('addGroupMemberBtn').hidden=false;await openRoom(g.name,'ek_chat_group_messages',g.id)}
+ $('addGroupMemberBtn').addEventListener('click',async()=>{if(!group)return;const code=prompt('Enter the friend’s EverydayKit ID (example: EK-A1B2C3D4)');if(!code)return;try{const p=await findProfile(code);if(!p){status('No account found for that ID.',true);return}const {error}=await supabaseClient.from('ek_chat_group_members').insert({group_id:group.id,user_id:p.id,added_by:currentAuthUser.id});if(error)throw error;status('Member added to group.');}catch(e){status(e.message||'Could not add member. They may already be in the group.',true)}});
+ async function openRoom(title,table,channelSuffix){$('chatContactName').textContent=title;$('chatConnection').textContent='Connecting…';$('chatMessages').innerHTML='';lastIds.clear();$('chatStart').hidden=true;$('chatRoom').hidden=false;updateCallButtons();await loadMessages();stopChannel();channel=supabaseClient.channel('ek-chat-'+channelSuffix).on('postgres_changes',{event:'INSERT',schema:'public',table},payload=>{const m=payload.new;if(chatMode==='direct'){if((m.sender_id===currentAuthUser.id&&m.recipient_id===peer?.id)||(m.sender_id===peer?.id&&m.recipient_id===currentAuthUser.id)){addMessage(m);if(m.sender_id!==currentAuthUser.id&&document.visibilityState==='hidden')window.ekNotifyEverydayKit?.('New message',m.body||'You received a message')}}else if(m.group_id===group?.id){addMessage(m);if(m.sender_id!==currentAuthUser.id&&document.visibilityState==='hidden')window.ekNotifyEverydayKit?.('New group message',m.body||'New activity in '+(group?.name||'your group'))}}).subscribe(state=>{$('chatConnection').textContent=state==='SUBSCRIBED'?'Live chat':'Connecting…'});if(chatMode==='direct')subscribeCalls()}
+ async function addMessage(m){if(!m||lastIds.has(m.id))return;lastIds.add(m.id);const box=document.createElement('div');box.className='chat-bubble'+(m.sender_id===currentAuthUser.id?' mine':'');if(chatMode==='group'&&m.sender_id!==currentAuthUser.id){const who=document.createElement('strong');who.textContent=m.sender_name||'Group member';box.append(who)}if(m.body){const t=document.createElement('div');t.textContent=m.body;box.append(t)}if(m.sticker){const st=document.createElement('div');st.style.fontSize='42px';st.textContent=m.sticker;box.append(st)}if(m.media_path){const isAudio=(m.body||'').startsWith('🎙️ Voice message');const v=document.createElement(isAudio?'audio':'video');v.controls=true;v.preload='metadata';if(!isAudio)v.playsInline=true;v.style.maxWidth='100%';box.append(v);const {data:sv}=await supabaseClient.storage.from('ek-chat-videos').createSignedUrl(m.media_path,3600);if(sv?.signedUrl)v.src=sv.signedUrl;else v.replaceWith(document.createTextNode(isAudio?'Voice message unavailable.':'Video unavailable.'))}const meta=document.createElement('small');meta.textContent=new Date(m.created_at).toLocaleString();box.append(meta);$('chatMessages').append(box);$('chatMessages').scrollTop=$('chatMessages').scrollHeight}
+ async function loadMessages(){if(!currentAuthUser)return;let q;if(chatMode==='direct'&&peer){q=supabaseClient.from('ek_chat_messages').select('id,sender_id,recipient_id,body,sticker,media_path,created_at').or('and(sender_id.eq.'+currentAuthUser.id+',recipient_id.eq.'+peer.id+'),and(sender_id.eq.'+peer.id+',recipient_id.eq.'+currentAuthUser.id+')').order('created_at',{ascending:true}).limit(100)}else if(chatMode==='group'&&group){q=supabaseClient.from('ek_chat_group_messages').select('id,group_id,sender_id,body,sticker,created_at').eq('group_id',group.id).order('created_at',{ascending:true}).limit(200)}else return;const {data,error}=await q;if(error){$('chatConnection').textContent='Setup needed';status('Chat database is not ready. Run the updated SQL setup file.',true);return}for(const m of data||[])await addMessage(m)}
+ async function send(body='',sticker=null,mediaPath=null){if(!currentAuthUser||(!peer&&!group)){status('Open a private chat or group first.',true);return}if(!body&&!sticker&&!mediaPath)return;let result;if(chatMode==='group'){result=await supabaseClient.from('ek_chat_group_messages').insert({group_id:group.id,sender_id:currentAuthUser.id,body,sticker})}else{result=await supabaseClient.from('ek_chat_messages').insert({sender_id:currentAuthUser.id,recipient_id:peer.id,body,sticker,media_path:mediaPath})}if(result.error){status('Message not sent. Check database permissions and setup.',true);return}$('chatText').value=''}
+ $('sendChatBtn').addEventListener('click',()=>send($('chatText').value.trim()));$('chatText').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send($('chatText').value.trim())}});document.querySelectorAll('[data-sticker]').forEach(b=>b.addEventListener('click',()=>send('',b.dataset.sticker)));
+ $('chatVideo').addEventListener('change',async e=>{const file=e.target.files&&e.target.files[0];e.target.value='';if(!file)return;if(!peer||!currentAuthUser||chatMode!=='direct'){status('Video messages are currently supported in private chats; group text and stickers are available.',true);return}if(!file.type.startsWith('video/')){status('Choose a video file.',true);return}if(file.size>25*1024*1024){status('Video is too large. Maximum size is 25 MB.',true);return}const path=currentAuthUser.id+'/'+Date.now()+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');status('Uploading video…');try{const {data,error}=await supabaseClient.storage.from('ek-chat-videos').upload(path,file,{contentType:file.type,upsert:false});if(error)throw error;await send('🎥 Video message',null,data.path);status('Video sent.')}catch(err){status(err.message||'Video upload failed. Check storage setup.',true)}});
+
+ // One-to-one WebRTC calling. Signaling uses the authenticated Supabase table added by the SQL setup.
+ function updateCallButtons(){const direct=!!(peer&&chatMode==='direct');$('callVoiceBtn').disabled=!direct;$('callVideoBtn').disabled=!direct;$('callState').textContent=direct?'Private voice and video calls':'Open a private chat to call';}
+ function callState(msg){$('callState').textContent=msg;$('ekCallMessage').textContent=msg;}
+ function showCallScreen(msg){$('ekCallScreen').hidden=false;callState(msg);$('endCallBtn').hidden=false;}
+ function hideCallScreen(){ $('ekCallScreen').hidden=true;$('ekAcceptCall').hidden=true;$('ekDeclineCall').hidden=true;$('endCallBtn').hidden=true;$('ekRemoteVideo').srcObject=null;$('ekLocalVideo').srcObject=null; }
+ async function sendSignal(type,payload={},to=peer?.id,callId=activeCallId){if(!currentAuthUser||!to||!callId)throw new Error('Call is not ready.');const {error}=await supabaseClient.from('ek_chat_call_signals').insert({call_id:callId,from_user:currentAuthUser.id,to_user:to,kind:type,payload});if(error)throw error;}
+ function subscribeCalls(){if(callSub&&supabaseClient){supabaseClient.removeChannel(callSub);callSub=null;}if(!supabaseClient||!currentAuthUser)return;callSub=supabaseClient.channel('ek-calls-'+currentAuthUser.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'ek_chat_call_signals',filter:'to_user=eq.'+currentAuthUser.id},async ev=>{try{await receiveSignal(ev.new)}catch(e){callState(e.message||'Call connection error');}}).subscribe();}
+ async function flushQueuedIce(){if(!pc||!activeCallId||!pc.remoteDescription)return;const list=queuedIce.get(activeCallId)||[];queuedIce.delete(activeCallId);for(const candidate of list){try{await pc.addIceCandidate(candidate)}catch{}}}
+ async function makePeerConnection(){if(pc)return pc;pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]});pc.onicecandidate=e=>{if(e.candidate&&activeCallId&&peer)sendSignal('ice',{candidate:e.candidate.toJSON()}).catch(()=>{})};pc.ontrack=e=>{if(e.streams&&e.streams[0])$('ekRemoteVideo').srcObject=e.streams[0]};pc.onconnectionstatechange=()=>{if(pc&&['connected','connecting','disconnected'].includes(pc.connectionState))callState('Call '+pc.connectionState);if(pc&&pc.connectionState==='failed')callState('Connection failed. Try again on a stronger network.');};return pc;}
+ async function startCall(kind){if(!peer||chatMode!=='direct'||!currentAuthUser){status('Open a private chat before calling.',true);return}if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){status('Calls need HTTPS and browser microphone/camera permission.',true);return}if(pc){status('Finish the current call first.',true);return}callKind=kind;activeCallId=crypto.randomUUID();showCallScreen('Starting '+(kind==='video'?'video':'voice')+' call…');$('ekAcceptCall').hidden=true;$('ekDeclineCall').hidden=true;try{localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:kind==='video'});$('ekLocalVideo').srcObject=localStream;$('ekLocalVideo').style.display=kind==='video'?'block':'none';$('ekRemoteVideo').style.display=kind==='video'?'block':'none';await makePeerConnection();localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));const offer=await pc.createOffer();await pc.setLocalDescription(offer);await sendSignal('offer',{description:offer,kind},peer.id,activeCallId);callState('Calling '+(peer.display_name||peer.chat_id)+'…');}catch(e){await endCall(false);status(e.message||'Could not start call. Check microphone/camera permissions.',true)}}
+ async function receiveSignal(s){if(s.kind==='ice'&&(s.call_id!==activeCallId||!pc||!pc.remoteDescription)){const list=queuedIce.get(s.call_id)||[];if(list.length<64&&s.payload?.candidate)list.push(s.payload.candidate);queuedIce.set(s.call_id,list);return}if(s.kind==='offer'){if(pc)return;if(!peer||peer.id!==s.from_user||chatMode!=='direct'){const {data:profile,error}=await supabaseClient.rpc('find_ek_chat_profile_by_user_id',{p_user_id:s.from_user});if(error)throw error;const found=Array.isArray(profile)?profile[0]:profile;if(!found)return;peer=found;group=null;chatMode='direct';$('addGroupMemberBtn').hidden=true;await openRoom(found.display_name||found.chat_id,'ek_chat_messages',[currentAuthUser.id,peer.id].sort().join('-'));}activeCallId=s.call_id;callKind=s.payload?.kind==='video'?'video':'audio';incomingOffer=s.payload?.description;showCallScreen('Incoming '+(callKind==='video'?'video':'voice')+' call from '+(peer.display_name||peer.chat_id));$('ekAcceptCall').hidden=false;$('ekDeclineCall').hidden=false;$('endCallBtn').hidden=true;$('ekLocalVideo').style.display=callKind==='video'?'block':'none';$('ekRemoteVideo').style.display=callKind==='video'?'block':'none';return;}if(!pc||s.call_id!==activeCallId)return;if(s.kind==='answer'&&s.payload?.description){await pc.setRemoteDescription(s.payload.description);await flushQueuedIce();callState('Call connected');}else if(s.kind==='ice'&&s.payload?.candidate){if(pc.remoteDescription){try{await pc.addIceCandidate(s.payload.candidate)}catch{}}else{const list=queuedIce.get(s.call_id)||[];list.push(s.payload.candidate);queuedIce.set(s.call_id,list)}}else if(s.kind==='end'){await endCall(false);callState('Call ended by the other person');}}
+ async function acceptCall(){if(!incomingOffer||!activeCallId||!peer)return;try{localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:callKind==='video'});$('ekLocalVideo').srcObject=localStream;await makePeerConnection();localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));await pc.setRemoteDescription(incomingOffer);await flushQueuedIce();const answer=await pc.createAnswer();await pc.setLocalDescription(answer);await sendSignal('answer',{description:answer},peer.id,activeCallId);incomingOffer=null;$('ekAcceptCall').hidden=true;$('ekDeclineCall').hidden=true;$('endCallBtn').hidden=false;callState('Connecting…');}catch(e){status(e.message||'Could not accept call. Check permissions.',true);await endCall(true)}}
+ async function endCall(notify=true){const oldPeer=peer?.id,oldId=activeCallId;if(notify&&oldPeer&&oldId&&currentAuthUser){try{await sendSignal('end',{},oldPeer,oldId)}catch{}}if(pc){pc.onicecandidate=null;pc.ontrack=null;pc.close();pc=null}if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null}if(oldId)queuedIce.delete(oldId);activeCallId=null;incomingOffer=null;hideCallScreen();}
+ $('callVoiceBtn').addEventListener('click',()=>startCall('audio'));$('callVideoBtn').addEventListener('click',()=>startCall('video'));$('endCallBtn').addEventListener('click',()=>endCall(true));$('ekHangupCall').addEventListener('click',()=>endCall(true));$('ekAcceptCall').addEventListener('click',acceptCall);$('ekDeclineCall').addEventListener('click',()=>endCall(true));
+ // Voice notes: tap once to record, tap again to stop and send.
+ $('recordVoiceBtn').addEventListener('click',async()=>{if(!peer||chatMode!=='direct'){status('Voice notes are available in private chats.',true);return}if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){status('Voice recording is not supported by this browser.',true);return}if(recorder&&recorder.state==='recording'){recorder.stop();$('recordVoiceBtn').textContent='🎙️ Voice';return}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});recordChunks=[];recorder=new MediaRecorder(stream);recorder.ondataavailable=e=>{if(e.data.size)recordChunks.push(e.data)};recorder.onstop=async()=>{stream.getTracks().forEach(t=>t.stop());const blob=new Blob(recordChunks,{type:recorder.mimeType||'audio/webm'});if(blob.size>25*1024*1024){status('Voice note is too large.',true);return}const ext=(blob.type.includes('mp4')?'m4a':'webm');const path=currentAuthUser.id+'/'+Date.now()+'-voice.'+ext;try{status('Uploading voice note…');const {data,error}=await supabaseClient.storage.from('ek-chat-videos').upload(path,blob,{contentType:blob.type,upsert:false});if(error)throw error;await send('🎙️ Voice message',null,data.path);status('Voice message sent.')}catch(e){status(e.message||'Voice upload failed. Run the latest SQL setup.',true)}};recorder.start();$('recordVoiceBtn').textContent='⏹ Stop & send';status('Recording voice note… Tap Stop & send when finished.');}catch(e){status('Microphone permission is needed to record voice notes.',true)}});
+
+ if(supabaseClient){supabaseClient.auth.onAuthStateChange(()=>{if(!currentAuthUser){peer=null;group=null;stopChannel();if(!app.hidden)status('Please log in to use chat.',true)}})}
+})();
+</script>
+
+
+
+<style>
+/* Mobile floating Chat action, with the AI helper stacked safely above */
+
+
+
+/* MAANKA-inspired mobile app redesign — retain EverydayKit green and floating Chat */
+:root{--bg:#07140d;--panel:#0e2116;--panel2:#142c1d;--text:#f2fff6;--muted:#a4c1ad;--accent:#45e68b;--line:#244a32}
+html{background:#07140d;scroll-behavior:smooth}body{background:#07140d;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45;padding-bottom:90px;overflow-x:hidden}
+header,main,footer{width:100%;max-width:760px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:12px}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.brand{font-size:1.05rem;gap:9px;letter-spacing:-.25px}.logo{width:39px;height:39px;border-radius:13px;background:linear-gradient(145deg,#62f7a4,#18b96a);box-shadow:0 5px 16px #24c87533;color:#052a17}.brand .tag{display:none}
+.header-actions{display:flex;gap:8px;align-items:center}.header-iconbtn{min-height:40px;border-radius:13px;border:1px solid #28563a;background:#10271a;color:#dfffea;padding:8px 11px;font-weight:800}.header-iconbtn.install{background:#45e68b;color:#062715;border-color:#45e68b}.install-label{font-size:.82rem}
+h1{font-size:clamp(1.8rem,8vw,2.55rem);letter-spacing:-1px;line-height:1.08;margin:0 0 10px}h1 span{color:#55f39a}.intro{font-size:.88rem;line-height:1.5;margin:0;color:#b2cbb9;max-width:36rem}
+/* The intro becomes a compact app welcome panel, not a desktop landing page. */
+header h1{padding-top:18px}header h1,header .intro{position:relative;z-index:1}header:has(.controls){position:relative}
+.controls{display:flex;flex-direction:column;gap:10px;margin:17px 0 12px}.countryline{display:flex;gap:9px;flex-wrap:nowrap}.countryline select{min-width:0;flex:1}.flag{display:grid;place-items:center;min-width:42px;height:48px;border:1px solid var(--line);border-radius:14px;background:#10271a}.controls input,.controls select{height:48px;padding:0 13px;border-radius:14px;background:#0d2015;border-color:#244a32;font-size:.9rem}
+.accountbar{display:flex;gap:8px;align-items:center;margin:12px 0 4px}.accountbar button{min-height:43px;border-radius:13px;padding:10px 12px;font-size:.83rem}.accountbar .primarybtn{flex:1}.accountbar .secondarybtn{flex:1}.accountstatus{font-size:.76rem;line-height:1.4;margin-top:7px;color:#8fb59b}.userpill{max-width:100%;overflow-wrap:anywhere}
+#installHelp:empty{display:none}#accountStatus{padding:0 2px}
+main{padding-top:8px}.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 12px}.sectionhead h2{font-size:1.08rem;letter-spacing:-.2px}.sectionhead .muted{font-size:.73rem;text-align:right}
+.chips{gap:8px;padding:2px 0 12px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{border:1px solid #244a32;background:#0e2116;color:#b9d2c0;border-radius:12px;padding:9px 13px;font-size:.8rem;font-weight:750}.chip.active{background:#45e68b;border-color:#45e68b;color:#062715}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{padding:12px;border-radius:17px;border:1px solid #1e402b;background:linear-gradient(155deg,#11271a,#0b1c12);box-shadow:0 4px 14px #0002;transition:transform .15s,border-color .15s}.card:active,.tool:active{transform:scale(.985)}.cardtop{align-items:center;gap:9px}.brandimg,.brandfallback{width:39px;height:39px;border-radius:12px}.brandfallback{background:#193a26}.card h3{font-size:.91rem;line-height:1.2}.tag{font-size:.64rem;border-color:#28543a;color:#9ec9ad;padding:2px 6px}.card p{font-size:.77rem;line-height:1.4;margin:9px 0 10px;color:#a8c4b0}.card a{display:inline-flex;align-items:center;gap:5px;color:#55f39a;font-size:.82rem}
+.tools{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tool{border-radius:17px;padding:13px;background:linear-gradient(155deg,#11271a,#0b1c12);border:1px solid #1e402b;box-shadow:0 4px 14px #0002}.tool h3{font-size:.91rem}.tool p{font-size:.77rem;line-height:1.4;color:#a8c4b0}.tool input,.tool select,.tool textarea{background:#07180e;border-color:#28513a;border-radius:12px;font-size:.85rem;padding:11px}.tool button,.primarybtn{background:linear-gradient(135deg,#58f4a0,#28d77b);color:#052715;border:0;border-radius:12px;font-weight:850}.tool button{min-height:42px;padding:10px;font-size:.83rem}.secondarybtn{background:#11271a;color:#e1ffeb;border-color:#28513a}.result{color:#65f6a5;font-size:.82rem}
+.notice{background:#14281b;border-color:#3b593c;color:#d8e9dc;border-radius:15px;font-size:.8rem;line-height:1.5}footer{border-color:#1d3c28;font-size:.75rem;padding-bottom:25px}
+.modal{background:#0e2116;border-color:#28513a}.modal input{background:#07180e;border-color:#28513a}.settings-row{border-color:#244a32}
+.ek-ai-launch{bottom:calc(76px + env(safe-area-inset-bottom,0px))!important}
+@media(min-width:600px){header,main,footer{max-width:860px;padding-left:22px;padding-right:22px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tools{grid-template-columns:repeat(2,minmax(0,1fr))}header h1{padding-top:22px}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tools{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:360px){header,main,footer{padding-left:12px;padding-right:12px}.brand{font-size:.95rem}.header-iconbtn{padding:8px}.install-label{display:none}.accountbar{flex-wrap:wrap}.accountbar button{flex:1 1 42%}.card{padding:10px}.card p{font-size:.74rem}}
+</style>
+
+
+
+<style id="ek-maanka-mobile-ui">
+:root{--ek-green:#0d7a4a;--ek-green-bright:#24b875;--ek-green-soft:#e8f7ef;--ek-ink:#10231a}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;max-width:100%;overflow-x:hidden;padding-bottom:calc(86px + env(safe-area-inset-bottom));}
+header,main,footer{width:min(100% - 24px,980px);margin-left:auto;margin-right:auto}
+header{padding:16px 0 12px}
+.brandrow{gap:10px;align-items:center}.brand{font-size:1.08rem;gap:7px}.logo{flex-shrink:0}.tag{font-size:.58rem}
+.header-actions{gap:8px}.header-iconbtn{min-height:42px;min-width:42px;border-radius:13px}
+header h1{font-size:clamp(1.8rem,7vw,3.2rem);line-height:1.08;letter-spacing:-.04em;margin:22px 0 10px}
+.intro{font-size:.92rem;line-height:1.55;max-width:45rem}
+.controls{border-radius:18px;padding:12px;gap:10px}.countryline{min-width:0}.countryline select{min-width:0;width:100%}
+.sectionhead{margin:24px 0 12px;gap:8px}.sectionhead h2{font-size:1.1rem}
+.chips{display:flex;gap:8px;overflow-x:auto;flex-wrap:nowrap;padding:2px 0 9px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chips>*{flex:0 0 auto}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid>*{min-width:0;border-radius:16px}.tools{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tool{min-width:0;padding:13px;border-radius:16px}.tool input,.tool textarea,.tool select{width:100%;min-width:0;box-sizing:border-box}
+button,a,select,input,textarea{touch-action:manipulation}button{min-height:40px}
+.ek-bottom-nav{position:fixed;z-index:9998;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));height:66px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;gap:2px;padding:5px 7px;background:rgba(255,255,255,.96);border:1px solid rgba(13,122,74,.16);border-radius:22px;box-shadow:0 8px 30px rgba(7,40,24,.18);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.ek-nav-item{border:0;background:transparent;color:#63746a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:650;line-height:1.1;padding:4px 1px;min-width:0;min-height:52px;border-radius:15px}.ek-nav-icon{font-size:22px;line-height:1.15;font-weight:500}.ek-nav-item.active{background:#e7f7ee;color:#087545}.ek-nav-item:active{transform:scale(.96)}
+@media(min-width:760px){body{padding-bottom:32px}.ek-bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(560px,calc(100% - 32px));bottom:16px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tools{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:390px){header,main,footer{width:calc(100% - 20px)}.tag{display:none}.grid{gap:8px}.tools{gap:8px}.tool{padding:10px}.ek-bottom-nav{left:7px;right:7px}.ek-nav-item{font-size:9px}}
+@media(prefers-color-scheme:dark){.ek-bottom-nav{background:rgba(20,31,25,.96);border-color:rgba(75,210,139,.22)}.ek-nav-item{color:#b7c9be}.ek-nav-item.active{background:#123d29;color:#65e7a2}}
+
+/* App-style page switching: navigation changes views instead of scrolling. */
+.ek-page[hidden]{display:none!important}
+body[data-ek-page="tools"] #ekDirectoryPage{display:none!important}
+body[data-ek-page="tools"] #ekToolsPage{display:block!important}
+body[data-ek-page="tools"] #ekNotice{display:none!important}
+body[data-ek-page="home"] #ekToolsPage,body[data-ek-page="directory"] #ekToolsPage{display:none!important}
+body[data-ek-page="home"] #ekDirectoryPage,body[data-ek-page="directory"] #ekDirectoryPage{display:block!important}
+body[data-ek-page="home"] #ekNotice{display:block!important}
+body[data-ek-page="directory"] #ekNotice{display:none!important}
+
+/* EverydayKit Pro polish: dark-first palette, premium surfaces and explicit day/night switch */
+:root{color-scheme:dark;--bg:#07150f;--panel:#0e2118;--panel2:#143526;--text:#f4fff8;--muted:#a9c6b5;--line:#254c38;--accent:#35df8a}
+body{background:radial-gradient(ellipse at 12% -10%,#155438 0,transparent 36%),radial-gradient(ellipse at 100% 8%,#123b29 0,transparent 30%),#07150f;color:var(--text)}
+.ek-bottom-nav{background:rgba(9,27,18,.96);border-color:rgba(75,210,139,.24);box-shadow:0 12px 38px rgba(0,0,0,.38)}
+.ek-nav-item{color:#9bb8a7}.ek-nav-item.active{background:#123d29;color:#65e7a2}
+.theme-toggle{border-color:#347650!important;background:linear-gradient(145deg,#173b29,#10271a)!important;color:#caffdf!important;min-width:76px;justify-content:center;box-shadow:inset 0 1px 0 #ffffff0a}
+.theme-toggle .theme-label{font-size:.78rem}
+.ek-welcome,.ek-tip-card,.ek-quick-card,.settings-card,.settings-group,.settings-row,.card,.tool{box-shadow:0 10px 30px rgba(0,0,0,.13)}
+.ek-quick-card{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.ek-quick-card:hover{transform:translateY(-2px);border-color:#3e9564;box-shadow:0 14px 32px #0003}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #55f3a0;outline-offset:3px}
+body[data-theme="light"]{color-scheme:light}
+body[data-theme="light"] .ek-bottom-nav{background:rgba(247,251,248,.97);border-color:#d4e4d9;box-shadow:0 10px 32px rgba(18,67,40,.16)}
+body[data-theme="light"] .ek-nav-item{color:#65776b}body[data-theme="light"] .ek-nav-item.active{background:#dff5e7;color:#087545}
+body[data-theme="light"] .theme-toggle{background:linear-gradient(145deg,#e5f7ec,#f7fcf8)!important;color:#145c37!important;border-color:#b9ddc6!important}
+body[data-theme="light"] .ek-welcome,body[data-theme="light"] .ek-tip-card,body[data-theme="light"] .ek-quick-card{box-shadow:0 10px 28px rgba(18,67,40,.07)}
+@media(max-width:520px){.theme-toggle{min-width:40px;width:40px;padding:8px!important}.theme-toggle .theme-label{display:none}}
+@media(prefers-reduced-motion:reduce){.ek-quick-card{transition:none}}
+</style>
+<script id="ek-maanka-nav-script">
+(()=>{
+ const nav=document.getElementById('ekBottomNav'); if(!nav)return;
+ const items=[...nav.querySelectorAll('[data-dest]')];
+ function active(dest){items.forEach(b=>{const on=b.dataset.dest===dest;b.classList.toggle('active',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
+ function showPage(page){
+   document.body.dataset.ekPage=page;
+   active(page==='directory'?'directory':page==='tools'?'tools':page==='account'?'account':page==='settings'?'settings':'home');
+   window.scrollTo({top:0,behavior:'auto'});
+ }
+ nav.addEventListener('click',e=>{const b=e.target.closest('[data-dest]');if(!b)return;const d=b.dataset.dest;
+   if(d==='home'){showPage('home');return}
+   if(d==='directory'){showPage('directory');return}
+   if(d==='tools'){showPage('tools');return}
+   if(d==='chat'){active('chat');return}
+   if(d==='account'){active('account');document.getElementById('openLogin')?.click();return}
+   if(d==='settings'){active('settings');document.getElementById('openSettingsBtn')?.click();return}
+ });
+ document.addEventListener('click',e=>{const go=e.target.closest('[data-go]');if(go){showPage(go.dataset.go);return}const action=e.target.closest('[data-action]');if(action){if(action.dataset.action==='chat')document.getElementById('openChatBtn')?.click();}});
+ showPage('home');
+})();
+</script>
+<style id="ek-personal-dashboard-css">
+body[data-ek-page="home"] #ekDashboardPage,body[data-ek-page="directory"] #ekDashboardPage,body[data-ek-page="tools"] #ekDashboardPage{display:none!important}
+body[data-ek-page="dashboard"] #ekHomePage,body[data-ek-page="dashboard"] #ekDirectoryPage,body[data-ek-page="dashboard"] #ekToolsPage,body[data-ek-page="dashboard"] #ekNotice{display:none!important}
+body[data-ek-page="dashboard"] #ekDashboardPage{display:block!important}
+.ek-dashboard-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0 24px}.ek-dash-stat{display:flex;align-items:center;gap:9px;padding:12px 10px;border:1px solid var(--line);border-radius:16px;background:var(--panel);min-width:0}.ek-dash-stat>span{font-size:21px;color:var(--accent)}.ek-dash-stat strong,.ek-dash-stat small{display:block}.ek-dash-stat strong{font-size:18px;line-height:1.2}.ek-dash-stat small{font-size:10px;color:var(--muted);line-height:1.3;margin-top:3px}.ek-dashboard-block{margin:24px 0}.ek-dashboard-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.ek-dashboard-title h3{font-size:18px;letter-spacing:-.03em;margin:0}.ek-dashboard-title .ek-eyebrow{margin:0 0 4px}.ek-dash-link{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:8px 10px;font-size:11px;font-weight:750;white-space:nowrap}.ek-dashboard-list{display:grid;gap:9px}.ek-dash-item{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--panel);min-width:0}.ek-dash-item .ek-dash-favicon{width:38px;height:38px;flex:0 0 38px;object-fit:contain;background:#fff;border-radius:11px;padding:4px}.ek-dash-item .ek-dash-item-copy{flex:1;min-width:0}.ek-dash-item strong{display:block;font-size:13px;overflow-wrap:anywhere}.ek-dash-item small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.ek-dash-item a{font-size:11px;color:var(--accent);font-weight:800;text-decoration:none;white-space:nowrap}.ek-dash-star{border:1px solid var(--line);background:var(--panel2);color:var(--accent);border-radius:10px;padding:8px 10px;font-size:17px;line-height:1}.ek-dash-empty{padding:17px;border:1px dashed var(--line);border-radius:15px;color:var(--muted);font-size:12px;text-align:center}.ek-dashboard-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ek-dashboard-tools button{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--text);min-height:116px}.ek-dashboard-tools button>span{font-size:23px}.ek-dashboard-tools strong{font-size:12px}.ek-dashboard-tools small{font-size:10px;color:var(--muted)}.ek-dashboard-footnote{font-size:11px;color:var(--muted);margin:20px 0}.ek-card-favorite{margin-left:auto;flex:0 0 auto;border:1px solid var(--line);background:var(--panel2);color:var(--accent);border-radius:10px;padding:7px 9px;font-size:17px;line-height:1}.cardtop{align-items:center}@media(max-width:370px){.ek-dash-stat{gap:5px;padding:10px 7px}.ek-dash-stat small{font-size:9px}.ek-dashboard-title h3{font-size:16px}}
+</style>
+<script id="ek-personal-dashboard-script">
+(()=>{
+ const FAV_KEY='ek-dashboard-favorites-v1',RECENT_KEY='ek-dashboard-recent-v1';
+ const safeRead=(key)=>{try{const x=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(x)?x:[]}catch(_){return[]}};
+ const safeWrite=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value))}catch(_){}};
+ let favorites=safeRead(FAV_KEY),recent=safeRead(RECENT_KEY);
+ const byId=id=>document.getElementById(id);
+ function rememberVisit(item){recent=[item,...recent.filter(x=>x.url!==item.url)].slice(0,8);safeWrite(RECENT_KEY,recent);renderDashboard()}
+ function favorite(item){const exists=favorites.some(x=>x.url===item.url);favorites=exists?favorites.filter(x=>x.url!==item.url):[item,...favorites].slice(0,50);safeWrite(FAV_KEY,favorites);renderDashboard();decorateCards()}
+ function makeItem(name,url,category){return {name:String(name||'Website').slice(0,100),url:String(url||'#'),category:String(category||'Service').slice(0,80)}}
+ function safeUrl(url){try{const u=new URL(url,location.href);return ['http:','https:'].includes(u.protocol)?u.href:'#'}catch(_){return '#'}}
+ function empty(message){const d=document.createElement('div');d.className='ek-dash-empty';d.textContent=message;return d}
+ function row(item,isFav){const el=document.createElement('div');el.className='ek-dash-item';const img=document.createElement('img');img.className='ek-dash-favicon';img.alt='';img.loading='lazy';try{img.src='https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(item.url).hostname)+'&sz=96'}catch(_){img.src='./icons/icon-192.png'}img.onerror=()=>{img.src='./icons/icon-192.png'};const copy=document.createElement('div');copy.className='ek-dash-item-copy';const name=document.createElement('strong');name.textContent=item.name;const meta=document.createElement('small');meta.textContent=item.category||'Website';copy.append(name,meta);el.append(img,copy);if(isFav){const star=document.createElement('button');star.type='button';star.className='ek-dash-star';star.textContent='★';star.title='Remove from favorites';star.setAttribute('aria-label','Remove '+item.name+' from favorites');star.onclick=()=>favorite(item);el.append(star)}else{const a=document.createElement('a');a.href=safeUrl(item.url);a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open ↗';a.addEventListener('click',()=>rememberVisit(item));el.append(a)}return el}
+ function renderDashboard(){const fav=byId('ekDashFavorites'),rec=byId('ekDashRecent');if(!fav||!rec)return;fav.replaceChildren();rec.replaceChildren();favorites.forEach(x=>fav.append(row(x,true)));recent.forEach(x=>rec.append(row(x,false)));if(!favorites.length)fav.append(empty('No favorites yet. Open Explore and tap ★ on a service you want to save.'));if(!recent.length)rec.append(empty('Websites you open from Explore will appear here.'));byId('ekDashFavCount').textContent=favorites.length;byId('ekDashRecentCount').textContent=recent.length;byId('ekDashToolCount').textContent='4'}
+ function decorateCards(){const directory=byId('directory');if(!directory)return;directory.querySelectorAll('.card').forEach(card=>{if(card.querySelector('.ek-card-favorite'))return;const title=card.querySelector('h3')?.textContent?.trim()||'Website';const link=card.querySelector('a[href]');if(!link)return;const url=safeUrl(link.href);const category=card.querySelector('.tag')?.textContent||'Service';const item=makeItem(title,url,category);const star=document.createElement('button');star.type='button';star.className='ek-card-favorite';star.textContent=favorites.some(x=>x.url===item.url)?'★':'☆';star.title=favorites.some(x=>x.url===item.url)?'Remove favorite':'Save to favorites';star.setAttribute('aria-label',star.title+' '+title);star.addEventListener('click',()=>{favorite(item);star.textContent=favorites.some(x=>x.url===item.url)?'★':'☆';star.title=favorites.some(x=>x.url===item.url)?'Remove favorite':'Save to favorites'});card.querySelector('.cardtop')?.append(star);link.addEventListener('click',()=>rememberVisit(item),{once:false})})}
+ const directory=byId('directory');if(directory){new MutationObserver(decorateCards).observe(directory,{childList:true,subtree:true});decorateCards()}
+ byId('ekClearRecent')?.addEventListener('click',()=>{recent=[];safeWrite(RECENT_KEY,recent);renderDashboard()});
+ document.addEventListener('click',e=>{const b=e.target.closest('[data-tool-shortcut]');if(!b)return;const name=b.dataset.toolShortcut;setTimeout(()=>{const tool=[...document.querySelectorAll('#ekToolsPage .tool')].find(x=>x.querySelector('h3')?.textContent?.includes(name));tool?.scrollIntoView({behavior:'smooth',block:'start'})},60)});
+ // Support dashboard page switching in the existing navigation controller.
+ const nav=byId('ekBottomNav');nav?.addEventListener('click',e=>{const b=e.target.closest('[data-dest="dashboard"]');if(b){document.body.dataset.ekPage='dashboard';nav.querySelectorAll('[data-dest]').forEach(x=>{const on=x===b;x.classList.toggle('active',on);if(on)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'auto'});renderDashboard()}});
+ document.addEventListener('click',e=>{const go=e.target.closest('[data-go="dashboard"]');if(go){document.body.dataset.ekPage='dashboard';renderDashboard()}});
+ renderDashboard();
+})();
+</script>
+
+
+<script id="ek-translation-studio-script">
+(()=>{
+ const $=id=>document.getElementById(id);const input=$('ekTranslateInput'),output=$('ekTranslateOutput'),from=$('ekTranslateFrom'),to=$('ekTranslateTo'),btn=$('ekTranslateBtn'),status=$('ekTranslateStatus'),count=$('ekTranslateCount');
+ if(!input||!output||!btn)return;
+ function say(message){status.style.display='block';status.textContent=message}
+ input.addEventListener('input',()=>{count.textContent=input.value.length+' / 4500'});
+ $('ekTranslateSwap').addEventListener('click',()=>{const old=from.value;from.value=to.value;to.value=old;const a=input.value;input.value=output.value;output.value=a;count.textContent=input.value.length+' / 4500'});
+ $('ekTranslateClear').addEventListener('click',()=>{input.value='';output.value='';count.textContent='0 / 4500';status.style.display='none';input.focus()});
+ $('ekTranslateCopy').addEventListener('click',async()=>{if(!output.value){say('Translate some text first.');return}try{await navigator.clipboard.writeText(output.value);say('Translation copied.')}catch(_){output.focus();output.select();say('Select the text and choose Copy.')}});
+ btn.addEventListener('click',async()=>{const text=input.value.trim();if(!text){say('Enter some text to translate first.');input.focus();return}if(from.value===to.value){output.value=text;say('Both languages are the same, so the original text is shown.');return}btn.disabled=true;btn.textContent='Translating…';say('Connecting to the translation service…');try{const url='https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair='+encodeURIComponent(from.value+'|'+to.value);const res=await fetch(url,{headers:{Accept:'application/json'}});if(!res.ok)throw new Error('Service unavailable');const data=await res.json();if(data.responseStatus!==200||!data.responseData?.translatedText)throw new Error(data.responseDetails||'No translation returned');output.value=data.responseData.translatedText;say('Translation ready. Please check the result for accuracy.')}catch(e){say('Could not translate right now. Check your internet connection and try again.')}finally{btn.disabled=false;btn.textContent='🌍 Translate'}});
+})();
+</script>
+
+
+<style id="ek-update-prompt-style">
+#ekUpdateNotice{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.68);backdrop-filter:blur(7px)}
+#ekUpdateNotice[aria-hidden="false"]{display:flex}
+#ekUpdateNotice .ek-update-card{width:min(100%,390px);padding:24px;border:1px solid var(--line,#294d38);border-radius:24px;background:var(--panel,#0d2117);color:var(--text,#f4fff8);box-shadow:0 25px 80px rgba(0,0,0,.4)}
+#ekUpdateNotice .ek-update-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:var(--panel2,#143526);font-size:27px;margin-bottom:14px}
+#ekUpdateNotice h2{margin:0 0 8px;font-size:22px;letter-spacing:-.03em}
+#ekUpdateNotice p{margin:0 0 18px;color:var(--muted,#a9c6b5);font-size:14px;line-height:1.55}
+#ekUpdateNotice .ek-update-actions{display:flex;gap:9px}
+#ekUpdateNotice button{flex:1;min-height:44px;border-radius:12px;font-weight:800;cursor:pointer}
+#ekUpdateNow{background:var(--accent,#35df8a);color:#052014;border:0}
+#ekUpdateLater{background:transparent;color:var(--text,#f4fff8);border:1px solid var(--line,#294d38)}
+</style>
+<div id="ekUpdateNotice" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ekUpdateTitle" aria-describedby="ekUpdateDescription">
+ <div class="ek-update-card"><div class="ek-update-icon" aria-hidden="true">⬆️</div><h2 id="ekUpdateTitle">EverydayKit update available</h2><p id="ekUpdateDescription">A newer version is ready with improvements and fixes. Update now to get the latest version.</p><div class="ek-update-actions"><button type="button" id="ekUpdateLater">Later</button><button type="button" id="ekUpdateNow">Update now</button></div></div>
+</div>
+<script id="ek-update-checker">
+(()=>{
+ const CURRENT_VERSION=document.querySelector('meta[name="ek-app-version"]')?.content||'1.5.0';
+ const modal=document.getElementById('ekUpdateNotice');
+ const later=document.getElementById('ekUpdateLater');
+ const now=document.getElementById('ekUpdateNow');
+ if(!modal||!later||!now||!/^https?:$/.test(location.protocol))return;
+ const key='ek-update-dismissed-'+CURRENT_VERSION;
+ function parts(v){return String(v||'0').trim().replace(/^v/i,'').split(/[.+-]/).slice(0,3).map(x=>parseInt(x,10)||0)}
+ function newer(remote,local){const a=parts(remote),b=parts(local);for(let i=0;i<3;i++){if((a[i]||0)>(b[i]||0))return true;if((a[i]||0)<(b[i]||0))return false}return false}
+ function show(){modal.setAttribute('aria-hidden','false');later.focus()}
+ function hide(){modal.setAttribute('aria-hidden','true')}
+ later.addEventListener('click',()=>{try{sessionStorage.setItem(key,'1')}catch(_){}hide()});
+ now.addEventListener('click',async()=>{now.disabled=true;now.textContent='Updating…';try{const reg='serviceWorker'in navigator?await navigator.serviceWorker.getRegistration():null;if(reg)await reg.update()}catch(_){}const u=new URL(location.href);u.searchParams.set('ek-update',Date.now().toString());location.replace(u.href)});
+ async function check(){try{const u=new URL('./index.html',location.href);u.searchParams.set('ek-version-check',Date.now().toString());const res=await fetch(u.href,{cache:'no-store',credentials:'same-origin'});if(!res.ok)return;const html=await res.text();const doc=new DOMParser().parseFromString(html,'text/html');const remote=doc.querySelector('meta[name="ek-app-version"]')?.content;if(remote&&newer(remote,CURRENT_VERSION)){let dismissed=false;try{dismissed=sessionStorage.getItem(key)==='1'}catch(_){}if(!dismissed)show()}}catch(_){/* Offline or static host unavailable: continue using the current version. */}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();
+})();
+</script>
+
+</body></html>
