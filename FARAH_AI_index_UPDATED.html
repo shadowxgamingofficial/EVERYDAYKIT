@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b111b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="description" content="FARAH AI helps you understand messages and write thoughtful replies in English, Arabic and Somali.">
+<title>FARAH AI — Your reply helper</title>
+<style>
+:root{color-scheme:dark;--bg:#090f18;--panel:#111d2b;--panel2:#152437;--line:#26394c;--text:#f3f8fc;--muted:#9aabba;--mint:#75e6b1;--mint2:#b5f6d7;--danger:#ffaaa8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#173c38 0,transparent 48%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}
+button,textarea,select{font:inherit}button{cursor:pointer}.shell{width:min(100% - 28px,680px);margin:0 auto;padding:22px 0 48px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:25px}.brand{display:flex;align-items:center;gap:11px}.logo{width:43px;height:43px;border-radius:15px;background:linear-gradient(145deg,#a0f3cb,#42c98f);display:grid;place-items:center;color:#06271b;font-weight:1000;font-size:22px;box-shadow:0 8px 28px #4ce0a044}.brand-name{font-size:20px;font-weight:950;letter-spacing:.08em}.brand-sub{font-size:10px;color:var(--muted);margin-top:2px}.settings-btn{border:1px solid var(--line);background:#111d2b;color:var(--text);border-radius:13px;padding:10px 13px;font-size:12px;font-weight:750}
+.hero{padding:23px 20px 21px;border:1px solid #285342;border-radius:25px;background:linear-gradient(135deg,#143b2b,#10251f 65%,#10202a);position:relative;overflow:hidden}.hero:after{content:"✦";position:absolute;right:17px;top:7px;font-size:95px;color:#a2f4c1;opacity:.07}.eyebrow{font-size:10px;font-weight:900;letter-spacing:.16em;color:var(--mint)}h1{font-size:clamp(29px,7vw,42px);line-height:1.03;letter-spacing:-.055em;margin:10px 0}.hero p{max-width:460px;color:#c2d9cc;font-size:13px;line-height:1.6;margin:0}
+.card{margin-top:15px;padding:17px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#121f2e,#0e1926);box-shadow:0 12px 32px #0002}.label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px;font-weight:850;margin-bottom:10px}.hint{font-size:10px;color:var(--muted);font-weight:500}textarea{width:100%;min-height:110px;resize:vertical;border:1px solid #30475c;background:#09131f;color:var(--text);border-radius:14px;padding:13px;outline:none;font-size:14px;line-height:1.5}textarea:focus,select:focus{border-color:var(--mint);box-shadow:0 0 0 3px #75e6b11c}
+.upload-row{display:flex;gap:9px;margin-top:11px}.upload{flex:1;display:flex;align-items:center;gap:11px;text-align:left;border:1px dashed #4b8068;border-radius:14px;background:#10271e;color:var(--text);padding:12px}.upload-icon{width:38px;height:38px;border-radius:12px;background:#1b4934;color:var(--mint);display:grid;place-items:center;font-size:23px}.upload b,.upload small{display:block}.upload b{font-size:12px}.upload small{font-size:10px;color:var(--muted);margin-top:3px}.remove{border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--text);padding:0 12px;font-size:11px}.preview{margin-top:12px;padding:9px;border:1px solid var(--line);border-radius:13px}.preview img{display:block;max-width:100%;max-height:250px;object-fit:contain;margin:auto;border-radius:8px}.preview p{font-size:10px;color:var(--muted);margin:8px 0 0}
+.tones{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tone{min-height:75px;border:1px solid var(--line);border-radius:14px;background:#0b1723;color:#d9e7f0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:11px;font-weight:800}.tone span{font-size:22px}.tone.active{border-color:var(--mint);background:#123a2a;color:var(--mint2);box-shadow:inset 0 0 0 1px #75e6b122}
+select{width:100%;background:#09131f;border:1px solid #30475c;color:var(--text);border-radius:13px;padding:13px;margin-top:8px;outline:none}
+.generate{width:100%;border:0;border-radius:14px;margin-top:15px;padding:15px;background:linear-gradient(135deg,#9af0c5,#4ed39a);color:#062619;font-size:14px;font-weight:950;box-shadow:0 9px 24px #42d99524}.generate:disabled{opacity:.6;cursor:wait}
+.status{font-size:11px;line-height:1.5;color:var(--muted);margin:10px 2px 0}.status.error{color:var(--danger)}.status.good{color:var(--mint)}
+.results{margin-top:22px}.results[hidden],.preview[hidden],.settings[hidden]{display:none}.results-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:11px}.results-head h2{font-size:20px;margin:4px 0 0}.tag{border:1px solid var(--line);border-radius:99px;padding:5px 9px;color:var(--muted);font-size:10px}
+.option{padding:15px;border:1px solid #2c5943;border-radius:16px;background:linear-gradient(145deg,#13291f,#101d1b);margin-top:10px}.option-title{font-size:10px;color:var(--mint);font-weight:900;letter-spacing:.1em;margin-bottom:9px}.option p{font-size:14px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 12px}.copy{border:1px solid #397451;border-radius:10px;background:#163c2a;color:#dffff0;padding:9px 13px;font-size:11px;font-weight:850}
+.privacy{font-size:10px;line-height:1.6;color:var(--muted);padding:15px 3px}.settings{position:fixed;inset:0;background:#0009;z-index:5;display:grid;place-items:end center;padding:14px}.settings-panel{width:min(100%,560px);padding:19px;border:1px solid var(--line);border-radius:22px;background:#101d2b;box-shadow:0 20px 70px #0008}.settings-head{display:flex;justify-content:space-between;align-items:center}.settings-head h2{margin:0;font-size:19px}.close{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:8px 11px}.setting-line{margin-top:17px}.setting-line label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.setting-line select{margin:0}.settings-note{font-size:10px;color:var(--muted);line-height:1.5;margin-top:15px}
+footer{text-align:center;color:#738698;font-size:10px;margin-top:15px}
+@media(max-width:390px){.shell{width:min(100% - 20px,680px)}.card{padding:14px}.tones{gap:5px}.tone{font-size:10px}.hero{padding:20px 16px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="top">
+    <div class="brand"><div class="logo">F</div><div><div class="brand-name">FARAH AI</div><div class="brand-sub">YOUR MESSAGE REPLY HELPER</div></div></div>
+    <div style="display:flex;gap:7px"><button class="settings-btn" id="installBtn" type="button">＋ Install</button><button class="settings-btn" id="openSettings" type="button">⚙ Settings</button></div>
+  </header>
+  <section class="hero">
+    <div class="eyebrow">A LITTLE HELP, THE RIGHT WORDS</div>
+    <h1>Know what<br>to say next.</h1>
+    <p>Paste a message or upload a chat screenshot. Choose your style and language, then get three natural reply ideas.</p>
+  </section>
+  <section class="card">
+    <div class="label" for="message">What did they say? <span class="hint">You can paste a message</span></div>
+    <textarea id="message" maxlength="1500" placeholder="Paste the message here…"></textarea><div class="hint" id="charCount" style="text-align:right;margin-top:6px">0 / 1,500</div>
+    <div class="upload-row">
+      <input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+      <button class="upload" id="chooseImage" type="button"><span class="upload-icon">＋</span><span><b>Upload screenshot</b><small>PNG, JPG or WEBP · max 4 MB</small></span></button>
+      <button class="remove" id="removeImage" type="button" hidden>Remove</button>
+    </div>
+    <div class="preview" id="previewBox" hidden><img id="previewImage" alt="Screenshot preview"><p>Preview only. FARAH AI does not save your screenshot in this website.</p></div>
+  </section>
+  <section class="card">
+    <div class="label">Choose your reply style</div>
+    <div class="tones" id="tones">
+      <button class="tone active" data-tone="romantic" aria-pressed="true" type="button"><span>❤️</span>Romantic</button>
+      <button class="tone" data-tone="funny" aria-pressed="false" type="button"><span>😂</span>Funny</button>
+      <button class="tone" data-tone="confident" aria-pressed="false" type="button"><span>😎</span>Confident</button>
+      <button class="tone" data-tone="cute" aria-pressed="false" type="button"><span>🥰</span>Cute</button>
+    </div>
+    <div class="label" style="margin-top:19px">Reply language</div>
+    <select id="language"><option value="English">🇬🇧 English</option><option value="Arabic">🇸🇦 العربية — Arabic</option><option value="Somali">🇸🇴 Af-Soomaali — Somali</option></select>
+    <button class="generate" id="generate" type="button">✦ Generate 3 replies</button>
+    <p class="status" id="status" role="status" aria-live="polite">Ready when you are. No account or sign-in needed.</p>
+  </section>
+  <section class="results" id="results" hidden>
+    <div class="results-head"><div><div class="eyebrow">FARAH AI SUGGESTIONS</div><h2 id="resultTitle">Your reply ideas</h2></div><span class="tag" id="resultTag">3 · Romantic</span></div>
+    <div id="options"></div>
+  </section>
+  <p class="privacy">🔒 Privacy: avoid uploading screenshots that show names, phone numbers, addresses or other private details. Screenshots are processed to generate replies and are not stored by this page. Use respectful replies, accept boundaries, and never pressure someone to answer.</p>
+  <footer>FARAH AI · A thoughtful reply starts with respect.</footer>
+</main>
+
+<div class="settings" id="settings" hidden>
+  <section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="settings-head"><h2 id="settingsTitle">Your settings</h2><button class="close" id="closeSettings" type="button">Close</button></div>
+    <div class="setting-line"><label for="defaultLanguage">Default reply language</label><select id="defaultLanguage"><option value="English">English</option><option value="Arabic">Arabic — العربية</option><option value="Somali">Somali — Af-Soomaali</option></select></div>
+    <div class="setting-line"><label for="defaultTone">Default reply style</label><select id="defaultTone"><option value="romantic">Romantic ❤️</option><option value="funny">Funny 😂</option><option value="confident">Confident 😎</option><option value="cute">Cute 🥰</option></select></div>
+    <p class="settings-note">These preferences are saved only on this device. FARAH AI does not need an account. The AI service is protected by server-side limits; the site does not contain the private AI key.</p>
+  </section>
+</div>
+<script>
+(()=>{
+  // Public Supabase project URL and publishable key; never place an OpenAI secret here.
+  const API_URL='https://datxluvurxqlwujmvqgf.supabase.co/functions/v1/farah-ai';
+  const PUBLIC_KEY='sb_publishable__tZbhgg34IJxFM8rKPK01A_CwMdCm6R';
+  const $=id=>document.getElementById(id);
+  let tone='romantic',imageData='',installPrompt=null;
+  const toneNames={romantic:'Romantic',funny:'Funny',confident:'Confident',cute:'Cute'};
+  const installBtn=$('installBtn');
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;installBtn.hidden=false;installBtn.textContent='＋ Install app';});
+  window.addEventListener('appinstalled',()=>{installPrompt=null;installBtn.textContent='Installed ✓';installBtn.disabled=true;});
+  installBtn.addEventListener('click',async()=>{if(installPrompt){installPrompt.prompt();const choice=await installPrompt.userChoice;installPrompt=null;installBtn.textContent=choice.outcome==='accepted'?'Installed ✓':'＋ Install';}else{setStatus('If installation is available, open your browser menu ⋮ and choose “Add to Home screen” or “Install app”. The site must be published over HTTPS with its PWA manifest and service worker.');}});
+  $('message').addEventListener('input',()=>{$('charCount').textContent=$('message').value.length+' / 1,500';});
+  const file=$('imageFile'),status=$('status'),button=$('generate');
+  function setStatus(msg,type=''){status.textContent=msg;status.className='status '+type;}
+  function selectTone(value){
+    tone=value;
+    const title=$('resultTitle');if(title)title.textContent=toneNames[value]+' reply ideas';
+    const tag=$('resultTag');if(tag)tag.textContent='3 · '+toneNames[value];
+    document.querySelectorAll('[data-tone]').forEach(b=>{const on=b.dataset.tone===value;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+    $('defaultTone').value=value;
+  }
+  document.querySelectorAll('[data-tone]').forEach(b=>b.addEventListener('click',()=>selectTone(b.dataset.tone)));
+  $('openSettings').addEventListener('click',()=>$('settings').hidden=false);
+  $('closeSettings').addEventListener('click',()=>$('settings').hidden=true);
+  $('settings').addEventListener('click',e=>{if(e.target===$('settings'))$('settings').hidden=true;});
+  $('defaultLanguage').addEventListener('change',()=>{$('language').value=$('defaultLanguage').value;localStorage.setItem('farah-language',$('defaultLanguage').value);});
+  $('defaultTone').addEventListener('change',()=>{selectTone($('defaultTone').value);localStorage.setItem('farah-tone',tone);});
+  $('language').addEventListener('change',()=>{$('defaultLanguage').value=$('language').value;localStorage.setItem('farah-language',$('language').value);});
+  try{
+    const savedLanguage=localStorage.getItem('farah-language'),savedTone=localStorage.getItem('farah-tone');
+    if(['English','Arabic','Somali'].includes(savedLanguage))$('language').value=$('defaultLanguage').value=savedLanguage;
+    if(['romantic','funny','confident','cute'].includes(savedTone)){selectTone(savedTone);$('defaultTone').value=savedTone;}
+  }catch(_){}
+  $('chooseImage').addEventListener('click',()=>file.click());
+  function clearImage(){imageData='';file.value='';$('previewImage').removeAttribute('src');$('previewBox').hidden=true;$('removeImage').hidden=true;}
+  $('removeImage').addEventListener('click',clearImage);
+  async function prepareImage(f){
+    if(!['image/png','image/jpeg','image/webp'].includes(f.type))throw Error('Choose a PNG, JPG or WEBP image.');
+    if(f.size>4*1024*1024)throw Error('Screenshot must be 4 MB or smaller.');
+    const raw=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(Error('Could not read image.'));r.readAsDataURL(f);});
+    const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(Error('Could not open image.'));i.src=raw;});
+    const scale=Math.min(1,1500/Math.max(img.width,img.height)),c=document.createElement('canvas');
+    c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    return c.toDataURL('image/jpeg',.82);
+  }
+  file.addEventListener('change',async()=>{
+    const f=file.files&&file.files[0];if(!f)return;
+    setStatus('Preparing your screenshot…');
+    try{imageData=await prepareImage(f);$('previewImage').src=imageData;$('previewBox').hidden=false;$('removeImage').hidden=false;setStatus('Screenshot ready. Choose a style and generate replies.','good');}
+    catch(e){clearImage();setStatus(e.message||'Could not use that screenshot.','error');}
+  });
+  function showReplies(replies){
+    const box=$('options');box.replaceChildren();
+    replies.slice(0,3).forEach((r,i)=>{
+      const value=String(typeof r==='string'?r:r?.text||'').trim();if(!value)return;
+      const article=document.createElement('article');article.className='option';
+      const title=document.createElement('div');title.className='option-title';title.textContent='OPTION '+(i+1);
+      const p=document.createElement('p');p.textContent=value;
+      const copy=document.createElement('button');copy.className='copy';copy.type='button';copy.textContent='Copy reply';
+      copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(value);copy.textContent='Copied ✓';}catch(_){copy.textContent='Copy unavailable';}});
+      article.append(title,p,copy);box.append(article);
+    });
+    $('results').hidden=box.children.length===0;
+    $('resultTitle').textContent=toneNames[tone]+' reply ideas';$('resultTag').textContent='3 · '+toneNames[tone];
+  }
+  button.addEventListener('click',async()=>{
+    const message=$('message').value.trim(),language=$('language').value;
+    if(!message&&!imageData){setStatus('Paste a message or upload a screenshot first.','error');return;}
+    button.disabled=true;button.textContent='✦ Thinking…';setStatus('FARAH AI is understanding the conversation…');
+    try{
+      const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':PUBLIC_KEY},body:JSON.stringify({message,screenshot:imageData||null,tone,language})});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok)throw Error(data.error||'AI service is not ready yet. Try again later.');
+      if(!Array.isArray(data.replies)||data.replies.length!==3)throw Error('The AI did not return three replies. Please try again.');
+      showReplies(data.replies);setStatus('Your three '+toneNames[tone].toLowerCase()+' replies are ready. All three follow the style you selected.','good');clearImage();
+    }catch(e){setStatus(e.message||'Could not connect. Check your internet and try again.','error');}
+    finally{button.disabled=false;button.textContent='✦ Generate 3 replies';}
+  });
+})();
+</script>
+</body>
+</html>
