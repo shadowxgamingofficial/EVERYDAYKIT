@@ -1,13 +1,13 @@
 {
   "id": "./",
-  "name": "EverydayKit \u2014 Country Directory & Tools",
-  "short_name": "EverydayKit",
-  "description": "Useful country links and free everyday tools in one place.",
+  "name": "FARAH AI — Smart Reply Assistant",
+  "short_name": "FARAH AI",
+  "description": "AI-powered replies in English, Somali and Arabic.",
   "lang": "en",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "background_color": "#0b1220",
   "theme_color": "#0b1220",
   "icons": [
